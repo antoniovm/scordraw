@@ -13,57 +13,29 @@ import org.omg.CORBA.OMGVMCID;
 public class Pruebas {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
-	List<CommPortIdentifier> puertosSerie = new LinkedList<CommPortIdentifier>();
-	Enumeration<CommPortIdentifier> listaPuertos = CommPortIdentifier.getPortIdentifiers();
+	PuertoSerie ps = new PuertoSerie("COM5");
+	PuertoSerie.mostrarPuertosSerieDisponibles();
 	
-	SerialPort com5 = null;
-	
-	//comprobamos todos los puertos y listamos los serie y paralelo
-	while(listaPuertos.hasMoreElements()){
-		CommPortIdentifier portId = listaPuertos.nextElement();
-		System.out.print(portId.getName()+"-");
-		if(portId.getPortType() == CommPortIdentifier.PORT_SERIAL){ //== 1
-			System.out.println("Puerto Serie ("+portId.getPortType()+")");
-			puertosSerie.add(portId); //si es serie, lo guardamos en la lista
-		}
-		if(portId.getPortType() == CommPortIdentifier.PORT_PARALLEL) //==2
-			System.out.println("Puerto Paralelo ("+portId.getPortType()+")");
+	String comando,recibido;
+	if(ps.abrir())
+		System.out.print("Comunicacion establecida");
+	else{
+		System.out.print("No se ha podido establecer comunicacion");
+		System.exit(-1);
 	}
 	
-	Iterator<CommPortIdentifier> it = puertosSerie.iterator();
-	CommPortIdentifier puertoActual;
-	System.out.println("\nPRUEBA");
-	
-	while(it.hasNext()){
-		puertoActual = it.next();
-		System.out.println(puertoActual.getName());
-		if(puertoActual.getName().equals("COM5"))
-			if(!puertoActual.isCurrentlyOwned())
-				com5 = (SerialPort)puertoActual.open(puertoActual.getName(), 5000);
-		
-			
-	}
-	
-	com5.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-	OutputStream osCom5 = com5.getOutputStream();
-	InputStream isCom5 = com5.getInputStream();
-	String comando="";
 	while(true){
 		System.out.print("\n>");
 		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine()+'\r';
-	
-	//osCom4.write();
-	byte[] bufferLectura = new byte[256];
-	
-	for (int i = 0; i < comando.length(); i++) {
-		osCom5.write(comando.charAt(i));
-		isCom5.read(bufferLectura);
-		System.out.println(new String(bufferLectura).trim());
+
+		for (int i = 0; i < comando.length(); i++) {
+			ps.escribir(comando.charAt(i)+"");
+			recibido=ps.leer();
+			System.out.println(recibido);
+		}
 	}
-	
-	
-	}
-	//---------------------------------------
+
+
 
 }
 
