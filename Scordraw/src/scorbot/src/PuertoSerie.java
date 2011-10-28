@@ -23,9 +23,10 @@ public class PuertoSerie {
 		buscarPuertosSerieDisponibles(nombrePuerto);
 	}
 	public static void mostrarPuertosSerieDisponibles(){
+		listaPuertos=CommPortIdentifier.getPortIdentifiers();
 		while(listaPuertos.hasMoreElements()){
 			CommPortIdentifier portId = listaPuertos.nextElement();
-			if(portId.getPortType() == CommPortIdentifier.PORT_SERIAL){ //== 1
+			if((portId.getPortType() == CommPortIdentifier.PORT_SERIAL)&&!portId.isCurrentlyOwned()){ //== 1
 				System.out.println(portId.getName()+"-"+"Puerto Serie ("+portId.getPortType()+")");
 				
 			}
@@ -34,13 +35,10 @@ public class PuertoSerie {
 	}
 	
 	private void buscarPuertosSerieDisponibles(String nombrePuerto) {
-		Iterator<CommPortIdentifier> it = puertosSerie.iterator();
 		CommPortIdentifier puertoActual;
-		System.out.println("\nPRUEBA");
 		
-		while(it.hasNext()){
-			puertoActual = it.next();
-		
+		while(listaPuertos.hasMoreElements()){
+			puertoActual = listaPuertos.nextElement();
 			if(puertoActual.getName().equals(nombrePuerto))
 				candidatoPuertoSerie = puertoActual;
 			
@@ -59,7 +57,7 @@ public class PuertoSerie {
 
 	}
 	public boolean estaDisponible() {
-		return candidatoPuertoSerie.isCurrentlyOwned();
+		return !candidatoPuertoSerie.isCurrentlyOwned();
 
 	}
 	public boolean escribir(String cadena) {
@@ -77,7 +75,8 @@ public class PuertoSerie {
 	
 	public String leer() {
 		byte [] bytes;
-		if(puertoSerie==null) return null;
+		if(puertoSerie==null) 
+			return null;
 			try {
 				//Tamaño del array = numero de bytes disponibles
 				bytes = new byte [puertoSerie.getInputStream().available()+1];

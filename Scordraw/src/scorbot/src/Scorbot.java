@@ -1,75 +1,36 @@
 package scorbot.src;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.*;
 
 import javax.comm.*;
 
-import org.omg.CORBA.OMGVMCID;
-public class Scortbot {
+public class Scorbot {
 
-public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
-	List<CommPortIdentifier> puertosSerie = new LinkedList<CommPortIdentifier>();
-	Enumeration<CommPortIdentifier> listaPuertos = CommPortIdentifier.getPortIdentifiers();
+public static void main(String[] args) throws UnsupportedCommOperationException, PortInUseException {
+	PuertoSerie ps = new PuertoSerie("COM6");
+	PuertoSerie.mostrarPuertosSerieDisponibles();
 	
-	SerialPort com6=null;
 	
-	//comprobamos todos los puertos y listamos los serie y paralelo
-	while(listaPuertos.hasMoreElements()){
-		CommPortIdentifier portId = listaPuertos.nextElement();
-		System.out.print(portId.getName()+"-");
-		if(portId.getPortType() == CommPortIdentifier.PORT_SERIAL){ //== 1
-			System.out.println("Puerto Serie ("+portId.getPortType()+")");
-			puertosSerie.add(portId); //si es serie, lo guardamos en la lista
-		}
-		if(portId.getPortType() == CommPortIdentifier.PORT_PARALLEL) //==2
-			System.out.println("Puerto Paralelo ("+portId.getPortType()+")");
-	}
-	
-	Iterator<CommPortIdentifier> it = puertosSerie.iterator();
-	List<SerialPort> pSerieOpen = new LinkedList<SerialPort>();
-	CommPortIdentifier puertoActual;
-	System.out.println("\nPRUEBA");
-	
-	/*Comprobamos si los puertos serie estan siendo utilizado por
-	 * alguna aplicacion e intentamos abrir los 3 (cambiarlo en clase)
-	 * para inicializarlos como SerialPort*/
-	while(it.hasNext()){
-		puertoActual = it.next();
-		System.out.println(puertoActual.getName());
-		if(puertoActual.getName().equals("COM6"))
-			if(!puertoActual.isCurrentlyOwned())
-				com6 = (SerialPort)puertoActual.open(puertoActual.getName(), 5000);
-		
-			
+	if(ps.abrir())
+		System.out.print("Comunicacion establecida");
+	else{
+		System.out.print("No se ha podido establecer comunicacion");
+		System.exit(-1);
 	}
 	
 	
-	
-	//com6.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-	OutputStream osCom6 = com6.getOutputStream();
-	InputStream isCom6 = com6.getInputStream();
-	String comando="";
 	while(true){
 		System.out.print("\n>");
-		//comando=(new BufferedReader(new InputStreamReader(System.in))).readLine()+'\r';
+		
+		String lectura;
 	
-	//osCom4.write();
-	byte[] bufferLectura = new byte[256];
 	
-	//for (int i = 0; i < comando.length(); i++) {
-		isCom6.read(bufferLectura);
-		osCom6.write(new String(bufferLectura).trim().getBytes());
-		System.out.println(new String(bufferLectura).trim());
-	//}
-	//osCom6.write(new String("Done.\n>").getBytes());
+		lectura=ps.leer();
+		ps.escribir(lectura);
+		System.out.println(lectura);
+	
 	
 	}
-	//---------------------------------------
+	
 
 }
 
