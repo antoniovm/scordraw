@@ -20,13 +20,14 @@ public class PuertoSerie {
 		puertosSerie = new LinkedList<CommPortIdentifier>();
 		puertoSerie = null;
 		candidatoPuertoSerie = null;
-		buscarPuertosSerieDisponibles(nombrePuerto);
+		buscarPuertosSerieDisponibles();
+		buscarPuertoSerie(nombrePuerto);
 	}
 	/**
 	 * Muestra por pantalla los puertos serie disponibles en el sistema
 	 */
 	public static void mostrarPuertosSerieDisponibles(){
-		listaPuertos=CommPortIdentifier.getPortIdentifiers();
+		listaPuertos=CommPortIdentifier.getPortIdentifiers(); //esto no hace falta, no? ya se inicializa al declararse
 		while(listaPuertos.hasMoreElements()){
 			CommPortIdentifier portId = listaPuertos.nextElement();
 			if((portId.getPortType() == CommPortIdentifier.PORT_SERIAL)&&!portId.isCurrentlyOwned()){ //== 1
@@ -37,20 +38,29 @@ public class PuertoSerie {
 		}
 	}
 	/**
-	 * Comprueba si el puerto serie buscado, esta disponible
-	 * @param nombrePuerto
+	 * Comprueba y almacena cuales son los puertos serie disponibles
 	 */
-	private void buscarPuertosSerieDisponibles(String nombrePuerto) {
+	private void buscarPuertosSerieDisponibles(){
 		CommPortIdentifier puertoActual;
 		
 		while(listaPuertos.hasMoreElements()){
 			puertoActual = listaPuertos.nextElement();
+			if(puertoActual.getPortType() == CommPortIdentifier.PORT_SERIAL)
+				puertosSerie.add(puertoActual);
+		}
+	}
+	/**
+	 * Comprueba si el puerto serie buscado, esta disponible
+	 * @param nombrePuerto
+	 */
+	private void buscarPuertoSerie(String nombrePuerto) {
+		CommPortIdentifier puertoActual;
+		Iterator<CommPortIdentifier> it = puertosSerie.iterator();
+		while(it.hasNext()){
+			puertoActual = it.next();
 			if(puertoActual.getName().equals(nombrePuerto))
 				candidatoPuertoSerie = puertoActual;
-			
-				
 		}
-
 	}
 	/**
 	 * Abre la comunicacion con el puerto
