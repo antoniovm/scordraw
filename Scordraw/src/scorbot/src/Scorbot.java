@@ -6,6 +6,7 @@ import javax.comm.*;
 public class Scorbot {
 
 public static void main(String[] args) throws UnsupportedCommOperationException, PortInUseException {
+	System.out.print("Scorbot");
 	PuertoSerie ps = new PuertoSerie("COM6");
 	PuertoSerie.mostrarPuertosSerieDisponibles();
 	

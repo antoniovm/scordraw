@@ -27,7 +27,8 @@ public class PuertoSerie {
 	 * Muestra por pantalla los puertos serie disponibles en el sistema
 	 */
 	public static void mostrarPuertosSerieDisponibles(){
-		listaPuertos=CommPortIdentifier.getPortIdentifiers(); //esto no hace falta, no? ya se inicializa al declararse
+		//Se inicializa de nuevo para poder volverlo a recorrer
+		listaPuertos=CommPortIdentifier.getPortIdentifiers(); 
 		while(listaPuertos.hasMoreElements()){
 			CommPortIdentifier portId = listaPuertos.nextElement();
 			if((portId.getPortType() == CommPortIdentifier.PORT_SERIAL)&&!portId.isCurrentlyOwned()){ //== 1

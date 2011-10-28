@@ -13,6 +13,7 @@ import org.omg.CORBA.OMGVMCID;
 public class Pruebas {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
+	System.out.print("Prueba");
 	PuertoSerie ps = new PuertoSerie("COM5");
 	PuertoSerie.mostrarPuertosSerieDisponibles();
 	
@@ -31,7 +32,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		for (int i = 0; i < comando.length(); i++) {
 			ps.escribir(comando.charAt(i)+"");
 			recibido=ps.leer();
-			System.out.println(recibido);
+			System.out.print(recibido);
 		}
 	}
 
