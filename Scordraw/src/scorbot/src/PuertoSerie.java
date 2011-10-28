@@ -124,7 +124,7 @@ public class PuertoSerie {
 			return null;
 		}
 		
-		return new String(bytes).trim();
+		return new String(bytes);
 
 	}
 }

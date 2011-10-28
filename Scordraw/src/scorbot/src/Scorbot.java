@@ -24,7 +24,7 @@ public static void main(String[] args) throws UnsupportedCommOperationException,
 	
 		lectura=ps.leer();
 		ps.escribir(lectura);
-		System.out.println(lectura);
+		System.out.print(lectura);
 	}
 }
 

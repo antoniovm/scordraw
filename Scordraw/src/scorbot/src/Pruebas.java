@@ -32,7 +32,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		for (int i = 0; i < comando.length(); i++) {
 			ps.escribir(comando.charAt(i)+"");
 			recibido=ps.leer();
-			System.out.print(recibido);
+			System.out.println(recibido);
 		}
 	}
 
