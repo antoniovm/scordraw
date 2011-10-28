@@ -22,6 +22,9 @@ public class PuertoSerie {
 		candidatoPuertoSerie = null;
 		buscarPuertosSerieDisponibles(nombrePuerto);
 	}
+	/**
+	 * Muestra por pantalla los puertos serie disponibles en el sistema
+	 */
 	public static void mostrarPuertosSerieDisponibles(){
 		listaPuertos=CommPortIdentifier.getPortIdentifiers();
 		while(listaPuertos.hasMoreElements()){
@@ -33,7 +36,10 @@ public class PuertoSerie {
 			
 		}
 	}
-	
+	/**
+	 * Comprueba si el puerto serie buscado, esta disponible
+	 * @param nombrePuerto
+	 */
 	private void buscarPuertosSerieDisponibles(String nombrePuerto) {
 		CommPortIdentifier puertoActual;
 		
@@ -46,7 +52,11 @@ public class PuertoSerie {
 		}
 
 	}
-	
+	/**
+	 * Abre la comunicacion con el puerto
+	 * @return	true si ha sido posible
+	 * 			false si no lo ha sido
+	 */
 	public boolean abrir() {
 		try {
 			puertoSerie = (SerialPort)candidatoPuertoSerie.open(candidatoPuertoSerie.getName(), 5000);
@@ -56,10 +66,19 @@ public class PuertoSerie {
 		return true;
 
 	}
+	/**
+	 * Comprueba si el puerto está disponible
+	 * @return 
+	 */
 	public boolean estaDisponible() {
 		return !candidatoPuertoSerie.isCurrentlyOwned();
 
 	}
+	/**
+	 * Escribe una cadena en el flujo de salida 
+	 * @param cadena
+	 * @return	si se ha escrito
+	 */
 	public boolean escribir(String cadena) {
 		if(puertoSerie==null) return false;
 		
@@ -72,7 +91,11 @@ public class PuertoSerie {
 		return true;
 
 	}
-	
+	/**
+	 * Lee una secuencia de bytes del flujo de entrada, y los convierte a una cadena 
+	 * @return Un String con los datos leidos
+	 * 		   null si se ha producido un error	
+	 */
 	public String leer() {
 		byte [] bytes;
 		if(puertoSerie==null) 
@@ -87,7 +110,7 @@ public class PuertoSerie {
 			//Leemos
 			puertoSerie.getInputStream().read(bytes);
 		} catch (IOException e) {
-			return "";
+			return null;
 		}
 		
 		return new String(bytes).trim();
