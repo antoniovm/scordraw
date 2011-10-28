@@ -20,7 +20,7 @@ public class PuertoSerie {
 		puertosSerie = new LinkedList<CommPortIdentifier>();
 		puertoSerie = null;
 		candidatoPuertoSerie = null;
-		buscarPuertosSerieDisponibles();
+		buscarPuertosSerieDisponibles(nombrePuerto);
 	}
 	public static void mostrarPuertosSerieDisponibles(){
 		while(listaPuertos.hasMoreElements()){
@@ -33,7 +33,7 @@ public class PuertoSerie {
 		}
 	}
 	
-	private void buscarPuertosSerieDisponibles() {
+	private void buscarPuertosSerieDisponibles(String nombrePuerto) {
 		Iterator<CommPortIdentifier> it = puertosSerie.iterator();
 		CommPortIdentifier puertoActual;
 		System.out.println("\nPRUEBA");
@@ -41,7 +41,7 @@ public class PuertoSerie {
 		while(it.hasNext()){
 			puertoActual = it.next();
 		
-			if(puertoActual.getName().equals("COM5"))
+			if(puertoActual.getName().equals(nombrePuerto))
 				candidatoPuertoSerie = puertoActual;
 			
 				
