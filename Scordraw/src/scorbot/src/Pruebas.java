@@ -25,6 +25,9 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		System.exit(-1);
 	}
 	
+	Interfaz interf = new Interfaz();
+	interf.setVisible(true);
+	
 	while(true){
 		System.out.print("\n>");
 		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine()+'\r';
@@ -32,7 +35,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		for (int i = 0; i < comando.length(); i++) {
 			ps.escribir(comando.charAt(i)+"");
 			recibido=ps.leer();
-			System.out.println(recibido);
+			interf.prompt(recibido+"\n>");
 		}
 	}
 
