@@ -13,10 +13,9 @@ import org.omg.CORBA.OMGVMCID;
 public class Pruebas {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
-	System.out.print("Prueba");
-	PuertoSerie ps = new PuertoSerie("COM5");
+	PuertoSerie ps = new PuertoSerie("COM4");
 	PuertoSerie.mostrarPuertosSerieDisponibles();
-	
+
 	String comando,recibido;
 	if(ps.abrir())
 		System.out.print("Comunicacion establecida");
@@ -24,19 +23,15 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		System.out.print("No se ha podido establecer comunicacion");
 		System.exit(-1);
 	}
-	
+	ps.flush();
 	Interfaz interf = new Interfaz();
-	interf.setVisible(true);
-	
+	//interf.setVisible(true);
+	//ps.escribirCadena(ACLParser.mover(100, 10, 50, -900, 0));
 	while(true){
 		System.out.print("\n>");
-		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine()+'\r';
-
-		for (int i = 0; i < comando.length(); i++) {
-			ps.escribir(comando.charAt(i)+"");
-			recibido=ps.leer();
-			interf.prompt(recibido+"\n>");
-		}
+		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine().toUpperCase()+'\r';
+		ps.escribirCadena(comando);
+		
 	}
 
 

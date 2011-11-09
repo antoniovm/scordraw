@@ -23,7 +23,7 @@ public static void main(String[] args) throws UnsupportedCommOperationException,
 		String lectura;
 	
 		lectura=ps.leer();
-		ps.escribir(lectura);
+		ps.escribirCaracter(lectura.charAt(0));
 		System.out.print(lectura);
 	}
 }

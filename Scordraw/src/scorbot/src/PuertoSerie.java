@@ -87,17 +87,31 @@ public class PuertoSerie {
 	}
 	/**
 	 * Escribe una cadena en el flujo de salida 
-	 * @param cadena
+	 * @param c
 	 * @return	si se ha escrito
 	 */
-	public boolean escribir(String cadena) {
+	public boolean escribirCaracter(char c) {
 		if(puertoSerie==null) return false;
 		
 		try {
-			puertoSerie.getOutputStream().write(cadena.getBytes());
+			puertoSerie.getOutputStream().write(c);
 		} catch (IOException e) {
 			return false;
 		}
+		
+		return true;
+
+	}
+	
+	public boolean escribirCadena(String comando) {
+		String leido="";
+		for (int i = 0; i < comando.length(); i++) {
+			escribirCaracter(comando.charAt(i));
+			//interf.prompt(recibido+"\n>");
+			System.out.print(leido=leer().trim());
+			
+		}
+		System.out.println("\n"+(leido=leer().trim()));
 		
 		return true;
 
@@ -126,5 +140,25 @@ public class PuertoSerie {
 		
 		return new String(bytes);
 
+	}
+	public void flush() {
+		int disponibles=0;
+		try {
+			disponibles = puertoSerie.getInputStream().available();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		if(disponibles<1) return;
+		byte [] buffer = new byte [disponibles];
+		while(disponibles>0){
+			try {
+				puertoSerie.getInputStream().read(buffer);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }
