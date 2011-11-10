@@ -5,6 +5,7 @@ import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
@@ -20,12 +21,12 @@ public class Interfaz extends JFrame{
 	private JTextArea consola;
 	private JButton pinza, limpiar;
 	
-	public Interfaz(Queue<Vector<Point>> trazos) {
+	public Interfaz(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		inicializar(trazos);
 		setVisible(true);
 	}
 
-	private void inicializar(Queue<Vector<Point>> trazos) {
+	private void inicializar(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		lienzo = new Lienzo(trazos);
 		consola = new JTextArea(">",20,10);
 		consola.setLineWrap(true);

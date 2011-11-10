@@ -12,8 +12,10 @@ import javax.comm.*;
 public class Pruebas {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
-	Queue<Vector<Point>> trazos = new LinkedList<Vector<Point>>();
-	trazos.add(new Vector<Point>());
+	ColaCircularConcurrente<LinkedList<Point>> trazos;
+	trazos = new ColaCircularConcurrente<LinkedList<Point>>(3);
+	
+	trazos.encolar(new LinkedList<Point>());
 	PuertoSerie ps = new PuertoSerie("COM4");
 	PuertoSerie.mostrarPuertosSerieDisponibles();
 
@@ -30,9 +32,12 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 	
 	
 	while(true){
-		System.out.print("\n>");
+		/*System.out.print("\n>");
 		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine().toUpperCase()+'\r';
-		ps.escribirCadena(comando);
+		ps.escribirCadena(comando);*/
+		
+		
+		
 		
 	}
 

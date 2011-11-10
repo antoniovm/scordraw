@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
@@ -16,13 +17,14 @@ import javax.swing.JPanel;
 public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	private Point a, b;
 	private boolean limpiar;
-	private Queue<Vector<Point>> trazos; 
+	private ColaCircularConcurrente<LinkedList<Point>> trazos; 
+	private LinkedList<Point> trazo;
 	
-	
-	public Lienzo(Queue<Vector<Point>> trazos) {
+	public Lienzo(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		a=new Point(-1, -1);
 		b=new Point(-1, -1);
 		this.trazos = trazos;
+		trazo = new LinkedList<Point>();
 		setPreferredSize(new Dimension(500,500));
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -58,6 +60,11 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		limpiar=true;
 		repaint();
 	}
+	
+	private void capturarTrazado(Point p) {
+		trazo.add(p);
+
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -81,20 +88,25 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	public void mousePressed(MouseEvent e) {
 		a.setLocation(e.getX(), e.getY());
 		b.setLocation(e.getX(), e.getY());
+		capturarTrazado((Point) b.clone());	//Primer punto de la lista
 		
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+		trazos.encolar(trazo);
+		trazo=new LinkedList<Point>();
 		
 	}
-
+/**
+ * Captura las coordenadas del raton y las encola en una lista enlazada
+ */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		a=(Point) b.clone();
-		b.setLocation(e.getX(), e.getY());
+		trazo.add((Point) b.clone());	//Añadir a la lista de puntos que forma un trazo
+		b.setLocation(e.getX(), e.getY());	//Modificar valores de b, para pintar una rectadesde a hasta b
 		repaint();
 		
 	}
