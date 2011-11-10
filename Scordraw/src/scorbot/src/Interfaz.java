@@ -2,8 +2,11 @@ package scorbot.src;
 
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Queue;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,13 +20,13 @@ public class Interfaz extends JFrame{
 	private JTextArea consola;
 	private JButton pinza, limpiar;
 	
-	public Interfaz() {
-		inicializar();
+	public Interfaz(Queue<Vector<Point>> trazos) {
+		inicializar(trazos);
 		setVisible(true);
 	}
 
-	private void inicializar() {
-		lienzo = new Lienzo();
+	private void inicializar(Queue<Vector<Point>> trazos) {
+		lienzo = new Lienzo(trazos);
 		consola = new JTextArea(">",20,10);
 		consola.setLineWrap(true);
 		

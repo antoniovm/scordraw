@@ -1,18 +1,19 @@
 package scorbot.src;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Vector;
 
 import javax.comm.*;
-
-import org.omg.CORBA.OMGVMCID;
 public class Pruebas {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
+	Queue<Vector<Point>> trazos = new LinkedList<Vector<Point>>();
+	trazos.add(new Vector<Point>());
 	PuertoSerie ps = new PuertoSerie("COM4");
 	PuertoSerie.mostrarPuertosSerieDisponibles();
 
@@ -24,9 +25,10 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		//System.exit(-1);
 	}
 	ps.flush();
-	Interfaz interf = new Interfaz();
-	//interf.setVisible(true);
+	Interfaz interf = new Interfaz(trazos);
 	//ps.escribirCadena(ACLParser.mover(100, 10, 50, -900, 0));
+	
+	
 	while(true){
 		System.out.print("\n>");
 		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine().toUpperCase()+'\r';
