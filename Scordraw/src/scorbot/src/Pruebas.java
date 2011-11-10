@@ -21,7 +21,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		System.out.print("Comunicacion establecida");
 	else{
 		System.out.print("No se ha podido establecer comunicacion");
-		System.exit(-1);
+		//System.exit(-1);
 	}
 	ps.flush();
 	Interfaz interf = new Interfaz();

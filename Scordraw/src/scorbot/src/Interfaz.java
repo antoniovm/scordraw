@@ -15,10 +15,11 @@ public class Interfaz extends JFrame{
 	private JScrollPane scrollConsola;
 	private Lienzo lienzo;
 	private JTextArea consola;
-	private JButton boton;
+	private JButton pinza, limpiar;
 	
 	public Interfaz() {
 		inicializar();
+		setVisible(true);
 	}
 
 	private void inicializar() {
@@ -28,9 +29,19 @@ public class Interfaz extends JFrame{
 		
 		scrollConsola = new JScrollPane(consola);
 		scrollConsola.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		boton = new JButton("Abrir Pinza");
+		pinza = new JButton("Abrir Pinza");
+		limpiar = new JButton("Limpiar");
 		
-		boton.addActionListener(new ActionListener() {
+		limpiar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lienzo.limpiarPantalla();
+				
+			}
+		});
+		
+		pinza.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -40,7 +51,8 @@ public class Interfaz extends JFrame{
 		
 		getContentPane().setLayout(new FlowLayout());
 		getContentPane().add(lienzo);
-		getContentPane().add(boton);
+		getContentPane().add(pinza);
+		getContentPane().add(limpiar);
 		getContentPane().add(scrollConsola);
 		pack();
 		

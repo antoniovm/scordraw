@@ -11,10 +11,10 @@ import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
 
 public class PuertoSerie {
-	SerialPort puertoSerie;
-	CommPortIdentifier candidatoPuertoSerie;
-	List<CommPortIdentifier> puertosSerie;
-	static Enumeration<CommPortIdentifier> listaPuertos = CommPortIdentifier.getPortIdentifiers();
+	private SerialPort puertoSerie;
+	private CommPortIdentifier candidatoPuertoSerie;
+	private List<CommPortIdentifier> puertosSerie;
+	static private Enumeration<CommPortIdentifier> listaPuertos = CommPortIdentifier.getPortIdentifiers();
 	
 	public PuertoSerie(String nombrePuerto) {
 		puertosSerie = new LinkedList<CommPortIdentifier>();
@@ -71,7 +71,7 @@ public class PuertoSerie {
 	public boolean abrir() {
 		try {
 			puertoSerie = (SerialPort)candidatoPuertoSerie.open(candidatoPuertoSerie.getName(), 5000);
-		} catch (PortInUseException e) {
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
@@ -82,7 +82,7 @@ public class PuertoSerie {
 	 * @return 
 	 */
 	public boolean estaDisponible() {
-		return !candidatoPuertoSerie.isCurrentlyOwned();
+		return puertoSerie!=null;
 
 	}
 	/**
@@ -91,7 +91,7 @@ public class PuertoSerie {
 	 * @return	si se ha escrito
 	 */
 	public boolean escribirCaracter(char c) {
-		if(puertoSerie==null) return false;
+		if(!estaDisponible()) return false;
 		
 		try {
 			puertoSerie.getOutputStream().write(c);
@@ -104,6 +104,7 @@ public class PuertoSerie {
 	}
 	
 	public boolean escribirCadena(String comando) {
+		if(!estaDisponible()) return false;
 		String leido="";
 		for (int i = 0; i < comando.length(); i++) {
 			escribirCaracter(comando.charAt(i));
@@ -123,8 +124,7 @@ public class PuertoSerie {
 	 */
 	public String leer() {
 		byte [] bytes;
-		if(puertoSerie==null) 
-			return null;
+		if(!estaDisponible()) return null;
 			try {
 				//Tamaño del array = numero de bytes disponibles
 				bytes = new byte [puertoSerie.getInputStream().available()+1];
@@ -142,6 +142,7 @@ public class PuertoSerie {
 
 	}
 	public void flush() {
+		if(!estaDisponible()) return;
 		int disponibles=0;
 		try {
 			disponibles = puertoSerie.getInputStream().available();
