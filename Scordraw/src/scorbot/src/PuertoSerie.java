@@ -14,12 +14,14 @@ public class PuertoSerie {
 	private SerialPort puertoSerie;
 	private CommPortIdentifier candidatoPuertoSerie;
 	private List<CommPortIdentifier> puertosSerie;
+	private String respuesta;
 	static private Enumeration<CommPortIdentifier> listaPuertos = CommPortIdentifier.getPortIdentifiers();
 	
 	public PuertoSerie(String nombrePuerto) {
 		puertosSerie = new LinkedList<CommPortIdentifier>();
 		puertoSerie = null;
 		candidatoPuertoSerie = null;
+		respuesta="";
 		buscarPuertosSerieDisponibles();
 		buscarPuertoSerie(nombrePuerto);
 	}
@@ -51,7 +53,7 @@ public class PuertoSerie {
 		}
 	}
 	/**
-	 * Comprueba si el puerto serie buscado, esta disponible
+	 * Comprueba si el puerto serie buscado esta disponible
 	 * @param nombrePuerto
 	 */
 	private void buscarPuertoSerie(String nombrePuerto) {
@@ -65,8 +67,7 @@ public class PuertoSerie {
 	}
 	/**
 	 * Abre la comunicacion con el puerto
-	 * @return	true si ha sido posible
-	 * 			false si no lo ha sido
+	 * @return	true si ha sido posible, false en caso contrario
 	 */
 	public boolean abrir() {
 		try {
@@ -79,16 +80,16 @@ public class PuertoSerie {
 	}
 	/**
 	 * Comprueba si el puerto está disponible
-	 * @return 
+	 * @return true si lo esta, false en caso contrario
 	 */
 	public boolean estaDisponible() {
 		return puertoSerie!=null;
 
 	}
 	/**
-	 * Escribe una cadena en el flujo de salida 
+	 * Escribe un caracter en el flujo de salida 
 	 * @param c
-	 * @return	si se ha escrito
+	 * @return	true si se ha escrito correctamente, false en caso contrario
 	 */
 	public boolean escribirCaracter(char c) {
 		if(!estaDisponible()) return false;
@@ -102,20 +103,39 @@ public class PuertoSerie {
 		return true;
 
 	}
-	
+	/**
+	 * Envia una cadena al flujo de salida
+	 * @param comando
+	 * @return true si se ha enviado correctamente, false en caso contrario
+	 */
 	public boolean escribirCadena(String comando) {
 		if(!estaDisponible()) return false;
 		String leido="";
 		for (int i = 0; i < comando.length(); i++) {
 			escribirCaracter(comando.charAt(i));
 			//interf.prompt(recibido+"\n>");
-			System.out.print(leido=leer().trim());
+			//System.out.print(leido=leer().trim());
+			respuesta+=leido=leer();
 			
 		}
-		System.out.println("\n"+(leido=leer().trim()));
+		//System.out.println("\n"+(leido=leer().trim()));
+		try {
+			while(puertoSerie.getInputStream().available()>0)	//Leer lo que queda
+				respuesta+=leido=leer();
+			
+		} catch (IOException e) {
+			System.err.println("Se ha producido un error al leer del flujo de entrada");
+			e.printStackTrace();
+		}
 		
 		return true;
 
+	}
+	
+	public String getRespuesta() {
+		String respuesta=this.respuesta;
+		this.respuesta="";
+		return respuesta;
 	}
 	/**
 	 * Lee una secuencia de bytes del flujo de entrada, y los convierte a una cadena 
@@ -141,6 +161,9 @@ public class PuertoSerie {
 		return new String(bytes);
 
 	}
+	/**
+	 * Vacia el flujo de entrada
+	 */
 	public void flush() {
 		if(!estaDisponible()) return;
 		int disponibles=0;

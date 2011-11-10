@@ -5,16 +5,18 @@ import java.util.concurrent.Semaphore;
 public class ColaCircularConcurrente<T> {
 	
 	private Object[] array;
-	private int inicio, fin, elementos;
-	private Semaphore elementoDisponible, espacioLibre;
+	private int inicio, fin, nElementos;
+	private Semaphore elementoDisponible, espacioLibre, exMutNElementos;
 	
 	
 	public ColaCircularConcurrente(int tamano) {
-		array = new Object[elementos=tamano];
+		array = new Object[tamano];
+		nElementos=0;
 		inicio=0;
 		fin=0;
 		elementoDisponible = new Semaphore(0);
-		espacioLibre = new Semaphore(elementos);
+		espacioLibre = new Semaphore(tamano);
+		exMutNElementos = new Semaphore(1);
 		
 	}
 	
@@ -23,7 +25,7 @@ public class ColaCircularConcurrente<T> {
 	 * @return true si esta vacia, false en caso contrario
 	 */
 	public boolean estaVacia() {
-		return elementos==0;
+		return nElementos==0;
 	}
 	/**
 	 * Comprueba si la cola esta llena 
@@ -31,22 +33,31 @@ public class ColaCircularConcurrente<T> {
 	 */
 	
 	public boolean estaLlena() {
-		return elementos==array.length;
+		return nElementos==array.length;
 	}
 	/**
 	 * Añade un objeto al final de la cola en caso de no estar llena
 	 * @param Object el objeto a encolar
 	 * @return true si se ha insertado correctamente, false en caso contrario
 	 */
-	public boolean encolar(T o) {
+	public boolean encolar(T objeto) {
+		if(estaLlena())return false;
+		
+		
 		try {
 			espacioLibre.acquire();			//WAIT EL
 		} catch (InterruptedException e) {
 			return false;
 		}
-		if(estaLlena())return false;
-		array[fin++]=o;
 		
+		array[fin=(fin++)%array.length]=objeto; //<--encolar
+		try {
+			exMutNElementos.acquire();
+		} catch (InterruptedException e) {
+			return false;					//WAIT EXMUT
+		}
+		nElementos++;
+		exMutNElementos.release();			//SIGNAL EXMUT
 		elementoDisponible.release();		//SIGNAL ED
 		return true;
 		
@@ -57,17 +68,26 @@ public class ColaCircularConcurrente<T> {
 	 * @return el objeto consumido si existe, o null en caso contrario
 	 */
 	public T consumir(){
-		T o=null;
+		T objeto=null;
+		if(estaVacia()) return objeto;
 		try {
 			elementoDisponible.acquire();	//WAIT ED
 		} catch (InterruptedException e) {
-			return o;
+			return objeto;
 		}
-		if(estaVacia()) return o;
-		o=(T)array[inicio];
-		array[inicio++]=null;
+		
+		
+		objeto=(T)array[inicio];
+		array[inicio=(inicio++)%array.length]=null;	//<--suprimir
+		try {
+			exMutNElementos.acquire();
+		} catch (InterruptedException e) {
+			return null;					//WAIT EXMUT
+		}
+		nElementos--;
+		exMutNElementos.release();			//SIGNAL EXMUT
 		espacioLibre.release();				//SIGNAL EL
-		return (T)o;
+		return (T)objeto;
 		
 		
 	}
