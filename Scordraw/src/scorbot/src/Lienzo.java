@@ -105,8 +105,8 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		a=(Point) b.clone();
-		trazo.add((Point) b.clone());	//Añadir a la lista de puntos que forma un trazo
 		b.setLocation(e.getX(), e.getY());	//Modificar valores de b, para pintar una rectadesde a hasta b
+		trazo.add((Point) b.clone());	//Añadir a la lista de puntos que forma un trazo
 		repaint();
 		
 	}

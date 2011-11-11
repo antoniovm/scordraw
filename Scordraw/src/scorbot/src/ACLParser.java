@@ -9,7 +9,7 @@ public class ACLParser {
 	 * @param estado
 	 * @return La instruccion en ACL
 	 */
-	public String pinza(String estado) {
+	public static String pinza(String estado) {
 		if(estado.equals("A"))
 			return "OPEN "+run;
 		if(estado.equals("C"))
