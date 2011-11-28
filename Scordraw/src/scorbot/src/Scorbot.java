@@ -1,5 +1,6 @@
 package scorbot.src;
 
+import java.awt.Point;
 import java.util.LinkedList;
 
 
@@ -134,6 +135,11 @@ public class Scorbot {
 	public boolean retardar(int tiempo) {
 		ps.escribirCadena(ACLParser.retardar(tiempo));
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
+	}
+	
+	public void pintarTrazo(LinkedList<Point> trazo) {
+		
+
 	}
 	
 	

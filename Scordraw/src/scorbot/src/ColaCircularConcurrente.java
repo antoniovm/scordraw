@@ -1,5 +1,6 @@
 package scorbot.src;
 
+import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
 
 public class ColaCircularConcurrente<T> {
@@ -90,6 +91,13 @@ public class ColaCircularConcurrente<T> {
 		return (T)objeto;
 		
 		
+	}
+	
+	public T ultimo() {
+		if(estaVacia())
+			return null;
+		return (T) array[fin];
+
 	}
 	
 	

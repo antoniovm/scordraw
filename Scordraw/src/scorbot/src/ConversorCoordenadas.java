@@ -10,8 +10,8 @@ public class ConversorCoordenadas {
 		int yReal = (int) (pLienzo.getY()*5000/500);
 		
 		//desplazar el origen
-		xReal -= 35;
-		yReal -= 15;
+		xReal -= 3500;
+		yReal -= 1500;
 		
 		return new Point(xReal, yReal);
 		
