@@ -125,12 +125,13 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 			@Override
 			public void run() {
 				trazos.encolar(trazo);
+				trazo=new LinkedList<Point>();
+				nuevoTrazado=true;
+				repaint();
 			}
 		}.start();
 		
-		trazo=new LinkedList<Point>();
-		nuevoTrazado=true;
-		repaint();
+		
 		
 		
 	}
