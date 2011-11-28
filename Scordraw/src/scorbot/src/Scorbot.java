@@ -140,17 +140,32 @@ public class Scorbot {
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
-	public void describirTrazo(LinkedList<Point> trazo) {
-		int i=1;
+	public void describirTrazo() {
+		LinkedList<Point> trazo = trazos.consumir();
+		Iterator<Point> iterator = trazo.iterator();
 		Point virtual=null, real=null;
-		for (Iterator<Point> iterator = trazo.iterator(); iterator.hasNext();) {
+		int i =2;
+		
+		declararPosicion(1+"");
+		virtual = iterator.next();
+		real=ConversorCoordenadas.convertir(virtual);
+		guardarPosicionAbsoluta(i+"", real.x, real.y, 1000, -900, 0);
+		moverLineal(1+"");
+		
+		
+		for (; iterator.hasNext();i++) {
 			declararPosicion(i+"");
-			virtual = iterator.next();
 			real=ConversorCoordenadas.convertir(virtual);
 			guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
 			moverLineal(i+"");
+			virtual = iterator.next();
 			
 		}
+		
+		declararPosicion(i+"");
+		guardarPosicionAbsoluta(i+"", real.x, real.y, 1000, -900, 0);
+		moverLineal(i+"");
+		
 
 	}
 	
