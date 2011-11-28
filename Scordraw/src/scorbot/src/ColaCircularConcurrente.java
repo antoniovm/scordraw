@@ -94,9 +94,14 @@ public class ColaCircularConcurrente<T> {
 	}
 	
 	public T ultimo() {
-		if(estaVacia())
+		try {
+			elementoDisponible.acquire();	//WAIT ED
+		} catch (InterruptedException e) {
 			return null;
+		}
+		elementoDisponible.release();
 		return (T) array[fin];
+		
 
 	}
 	
