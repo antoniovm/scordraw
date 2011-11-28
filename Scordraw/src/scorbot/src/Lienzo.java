@@ -52,7 +52,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	
 	private void pintarNuevoTrazo(Graphics g) {
 		g.setColor(Color.red);
-		Iterator<Point> iterator = limitarPuntos(trazos.ultimo()).iterator();
+		Iterator<Point> iterator = limitarPuntos((LinkedList<Point>)trazos.ultimo().clone(),40).iterator();
 		Point aux, aux2;
 		if(!iterator.hasNext()){
 			g.setColor(Color.black);
@@ -146,21 +146,27 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		
 	}
 	
-	private LinkedList<Point> limitarPuntos(LinkedList<Point> trazo) {
+	private LinkedList<Point> limitarPuntos(LinkedList<Point> trazo, int limite) {
 		LinkedList<Point> nuevoTrazo;
-		if(trazo.size()>20){
+		int tamanoTrazo=0;
+		if(trazo.size()>limite){
 			nuevoTrazo = new LinkedList<Point>();
-			for (int i = 0; i < 20; i++) {
+			tamanoTrazo = trazo.size();
+			for (int i = 0; i < limite && !trazo.isEmpty(); i++) {
 				nuevoTrazo.add(trazo.removeFirst());
 				
-				for (int j = 0; j < trazo.size()/20+1; j++) {
+				for (int j = 0; j < (int)(tamanoTrazo/limite)+1 && !trazo.isEmpty(); j++) {
 					trazo.removeFirst();
-					if(trazo.size()<2){
+					if(trazo.size()==1){
 						nuevoTrazo.add(trazo.removeFirst());
 						return nuevoTrazo;
 					}
+					
 				}
 				
+			}
+			if(trazo.size()==1){
+				nuevoTrazo.add(trazo.removeFirst());
 			}
 			
 			return nuevoTrazo;

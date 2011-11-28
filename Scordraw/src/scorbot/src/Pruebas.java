@@ -15,7 +15,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
 	trazos = new ColaCircularConcurrente<LinkedList<Point>>(3);
 	
-	trazos.encolar(new LinkedList<Point>());
+	//trazos.encolar(new LinkedList<Point>());
 	PuertoSerie ps = new PuertoSerie("COM4");
 	PuertoSerie.mostrarPuertosSerieDisponibles();
 
