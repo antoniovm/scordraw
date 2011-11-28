@@ -1,6 +1,7 @@
 package scorbot.src;
 
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -8,10 +9,12 @@ public class Scorbot {
 
 	PuertoSerie ps;
 	LinkedList<String> variablesPosicion;
+	ColaCircularConcurrente<LinkedList<Point>> trazos;
 	
-	public Scorbot() {
+	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		ps=new PuertoSerie("COM4");
 		variablesPosicion = new LinkedList<String>();
+		this.trazos=trazos;
 		ps.abrir();
 	}
 	
@@ -137,8 +140,17 @@ public class Scorbot {
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
-	public void pintarTrazo(LinkedList<Point> trazo) {
-		
+	public void describirTrazo(LinkedList<Point> trazo) {
+		int i=1;
+		Point virtual=null, real=null;
+		for (Iterator<Point> iterator = trazo.iterator(); iterator.hasNext();) {
+			declararPosicion(i+"");
+			virtual = iterator.next();
+			real=ConversorCoordenadas.convertir(virtual);
+			guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
+			moverLineal(i+"");
+			
+		}
 
 	}
 	
