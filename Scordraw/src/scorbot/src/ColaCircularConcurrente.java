@@ -42,7 +42,7 @@ public class ColaCircularConcurrente<T> {
 	 * @return true si se ha insertado correctamente, false en caso contrario
 	 */
 	public boolean encolar(T objeto) {
-		if(estaLlena())return false;
+		//if(estaLlena())return false;
 		
 		
 		try {
@@ -51,7 +51,7 @@ public class ColaCircularConcurrente<T> {
 			return false;
 		}
 		
-		array[fin=(fin++)%array.length]=objeto; //<--encolar
+		array[fin=(fin+1)%array.length]=objeto; //<--encolar
 		try {
 			exMutNElementos.acquire();
 		} catch (InterruptedException e) {
@@ -79,7 +79,7 @@ public class ColaCircularConcurrente<T> {
 		
 		
 		objeto=(T)array[inicio];
-		array[inicio=(inicio++)%array.length]=null;	//<--suprimir
+		array[inicio=(inicio+1)%array.length]=null;	//<--suprimir
 		try {
 			exMutNElementos.acquire();
 		} catch (InterruptedException e) {
