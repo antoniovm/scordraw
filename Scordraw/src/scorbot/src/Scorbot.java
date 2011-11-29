@@ -10,9 +10,11 @@ public class Scorbot extends Thread{
 	PuertoSerie ps;
 	LinkedList<String> variablesPosicion;
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
+	Integer progreso;
 	
-	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos) {
+	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos, Integer progreso) {
 		//PuertoSerie.mostrarPuertosSerieDisponibles();
+		this.progreso = progreso;
 		ps=new PuertoSerie("COM4");
 		variablesPosicion = new LinkedList<String>();
 		this.trazos=trazos;

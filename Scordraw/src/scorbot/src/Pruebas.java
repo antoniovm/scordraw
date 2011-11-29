@@ -13,14 +13,15 @@ public class Pruebas {
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
 	trazos = new ColaCircularConcurrente<LinkedList<Point>>(3);
+	Integer progreso = 0;
 	
-	Scorbot scb = new Scorbot(trazos);
+	Scorbot scb = new Scorbot(trazos, progreso);
 	
 	
-	if(!scb.estaActivo()){
+	/*if(!scb.estaActivo()){
 		System.out.println("FALLO!");
 		System.exit(-1);
-	}
+	}*/
 	scb.vaciarSalida();
 	
 	//System.out.println("Home: "+scb.home());
@@ -39,7 +40,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		//System.exit(-1);
 	}
 	ps.flush();*/
-	Interfaz interf = new Interfaz(trazos);
+	Interfaz interf = new Interfaz(trazos, progreso);
 	//ps.escribirCadena(ACLParser.mover(100, 10, 50, -900, 0));
 	
 	int n=2,x,y,z,p,r;
