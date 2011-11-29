@@ -52,7 +52,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	
 	private void pintarNuevoTrazo(Graphics g) {
 		g.setColor(Color.red);
-		Iterator<Point> iterator = limitarPuntos((LinkedList<Point>)trazos.ultimo().clone(),40).iterator();
+		Iterator<Point> iterator = trazo.iterator();
 		Point aux, aux2;
 		if(!iterator.hasNext()){
 			g.setColor(Color.black);
@@ -112,6 +112,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		trazo=new LinkedList<Point>();
 		a.setLocation(e.getX(), e.getY());
 		b.setLocation(e.getX(), e.getY());
 		capturarPunto(b);	//Primer punto de la lista
@@ -124,8 +125,8 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		new Thread(){
 			@Override
 			public void run() {
+				trazo=limitarPuntos(trazo,40);
 				trazos.encolar(trazo);
-				trazo=new LinkedList<Point>();
 				nuevoTrazado=true;
 				repaint();
 			}
@@ -135,6 +136,16 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		
 		
 	}
+	
+	
+	public boolean isNuevoTrazado() {
+		return nuevoTrazado;
+	}
+
+	public void setNuevoTrazado(boolean nuevoTrazado) {
+		this.nuevoTrazado = nuevoTrazado;
+	}
+
 /**
  * Captura las coordenadas del raton y las encola en una lista enlazada
  */
@@ -179,7 +190,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 			return nuevoTrazo;
 		}
 		
-		return trazo;
+		return (LinkedList<Point>)trazo.clone();
 
 	}
 }

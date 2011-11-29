@@ -102,7 +102,7 @@ public class ColaCircularConcurrente<T> {
 			return null;
 		}
 		elementoDisponible.release();
-		return (T) array[fin];
+		return (T) array[(fin-1+array.length)%array.length];
 		
 
 	}
