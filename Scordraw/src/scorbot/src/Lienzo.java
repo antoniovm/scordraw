@@ -87,7 +87,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		repaint();
 	}
 	
-	private void capturarTrazado(Point p) {
+	private void capturarPunto(Point p) {
 		trazo.add(p);
 
 	}
@@ -114,7 +114,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	public void mousePressed(MouseEvent e) {
 		a.setLocation(e.getX(), e.getY());
 		b.setLocation(e.getX(), e.getY());
-		capturarTrazado((Point) b.clone());	//Primer punto de la lista
+		capturarPunto((Point) b.clone());	//Primer punto de la lista
 		
 		
 	}
@@ -142,7 +142,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	public void mouseDragged(MouseEvent e) {
 		a=(Point) b.clone();
 		b.setLocation(e.getX(), e.getY());	//Modificar valores de b, para pintar una rectadesde a hasta b
-		trazo.add((Point) b.clone());	//Añadir a la lista de puntos que forma un trazo
+		capturarPunto((Point) b.clone());	//Añadir a la lista de puntos que forma un trazo
 		repaint();
 		
 	}
