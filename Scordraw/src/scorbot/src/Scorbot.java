@@ -215,7 +215,7 @@ public class Scorbot extends Thread{
 	private void recorrer(int i) {
 		controlOn();
 		for (int j = 2; j < i+1; j++) {
-			mover(j+"");
+			mover("V["+j+"]");
 		}
 		
 	}
@@ -225,26 +225,26 @@ public class Scorbot extends Thread{
 		Iterator<Point> iterator = trazo.iterator();
 		Point virtual=null, real=null;
 		int i =3;
-		
-		declararPosicion(2+"");
+		declararVectorPosiciones("V", 8);
+		//declararPosicion(2+"");
 		virtual = iterator.next();
 		real=ConversorCoordenadas.convertir(virtual);
-		guardarPosicionAbsoluta(2+"", real.x, real.y, 1000, -900, 0);		
+		guardarPosicionAbsoluta("V[2]", real.x, real.y, 1000, -900, 0);		
 		
 		for (; iterator.hasNext();i++) {
-			declararPosicion(i+"");
+			//declararPosicion(i+"");
 			real=ConversorCoordenadas.convertir(virtual);
-			guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
+			guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
 			virtual = iterator.next();
 			
 		}
-		declararPosicion(i+"");
+		//declararPosicion(i+"");
 		real=ConversorCoordenadas.convertir(virtual);
-		guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
+		guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
 		
 		
-		declararPosicion((i++)+"");
-		guardarPosicionAbsoluta(i+"", real.x, real.y, 1000, -900, 0);
+		//declararPosicion((i++)+"");
+		guardarPosicionAbsoluta("V["+(i++)+"]", real.x, real.y, 1000, -900, 0);
 		
 		return i;
 	
