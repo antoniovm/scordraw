@@ -244,7 +244,7 @@ public class Scorbot extends Thread{
 		
 		
 		//declararPosicion((i++)+"");
-		guardarPosicionAbsoluta("V["+(i++)+"]", real.x, real.y, 1000, -900, 0);
+		guardarPosicionAbsoluta("V["+(++i)+"]", real.x, real.y, 1000, -900, 0);
 		
 		return i;
 	
