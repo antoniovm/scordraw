@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 
-public class Scorbot {
+public class Scorbot extends Thread{
 
 	PuertoSerie ps;
 	LinkedList<String> variablesPosicion;
@@ -169,6 +169,12 @@ public class Scorbot {
 
 	}
 	
+	@Override
+	public void run() {
+		while (true) {
+			describirTrazo();
+		}
+	}
 	
 	
 	//------SIN TERMINAR, HAY QUE AÑADIR LOS METODOS DE ACLPARSER COMPROBANDO LA RESPUESTA DEL ROBOT

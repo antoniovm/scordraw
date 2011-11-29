@@ -51,7 +51,8 @@ public class ColaCircularConcurrente<T> {
 			return false;
 		}
 		
-		array[fin=(fin+1)%array.length]=objeto; //<--encolar
+		array[fin]=objeto; //<--encolar
+		fin=(fin+1)%array.length;
 		try {
 			exMutNElementos.acquire();
 		} catch (InterruptedException e) {
@@ -70,7 +71,7 @@ public class ColaCircularConcurrente<T> {
 	 */
 	public T consumir(){
 		T objeto=null;
-		if(estaVacia()) return objeto;
+		
 		try {
 			elementoDisponible.acquire();	//WAIT ED
 		} catch (InterruptedException e) {
@@ -79,7 +80,8 @@ public class ColaCircularConcurrente<T> {
 		
 		
 		objeto=(T)array[inicio];
-		array[inicio=(inicio+1)%array.length]=null;	//<--suprimir
+		array[inicio]=null;	//<--suprimir
+		inicio=(inicio+1)%array.length;
 		try {
 			exMutNElementos.acquire();
 		} catch (InterruptedException e) {
