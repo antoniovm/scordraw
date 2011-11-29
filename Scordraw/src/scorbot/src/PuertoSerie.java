@@ -115,6 +115,7 @@ public class PuertoSerie {
 			escribirCaracter(comando.charAt(i));
 			//interf.prompt(recibido+"\n>");
 			//System.out.print(leido=leer().trim());
+			
 			respuesta+=leido=leer();
 			
 		}
@@ -148,7 +149,7 @@ public class PuertoSerie {
 			try {
 				//Tamaño del array = numero de bytes disponibles
 				bytes = new byte [puertoSerie.getInputStream().available()+1];
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 				return null;
 			}
 		try {
@@ -158,7 +159,7 @@ public class PuertoSerie {
 			return null;
 		}
 		
-		return new String(bytes);
+		return new String(bytes).trim();
 
 	}
 	/**

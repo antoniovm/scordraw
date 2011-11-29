@@ -12,10 +12,16 @@ public class Scorbot extends Thread{
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
 	
 	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos) {
+		//PuertoSerie.mostrarPuertosSerieDisponibles();
 		ps=new PuertoSerie("COM4");
 		variablesPosicion = new LinkedList<String>();
 		this.trazos=trazos;
 		ps.abrir();
+	}
+	
+	public boolean estaActivo() {
+		return ps.estaDisponible();
+
 	}
 	
 	/**
@@ -25,6 +31,12 @@ public class Scorbot extends Thread{
 	public boolean home() {
 		ps.escribirCadena(ACLParser.home());
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
+	}
+	
+	public boolean controlOn() {
+		ps.escribirCadena(ACLParser.controlOn());
+		return comprobarEstadoDeRespuesta(ps.getRespuesta());
+
 	}
 	
 	/**
@@ -66,6 +78,7 @@ public class Scorbot extends Thread{
 	 * @return true si asi es, false en caso contrario
 	 */
 	private boolean comprobarEstadoDeRespuesta(String respuesta) {
+		System.out.println(respuesta.trim());
 		return respuesta.contains("Done.");
 	}
 	
@@ -80,7 +93,18 @@ public class Scorbot extends Thread{
 	 * @return true si ha podido guardar la posicion, false en caso contrario
 	 */
 	public boolean guardarPosicionAbsoluta(String posicion, int x, int y, int z, int p, int r) {
-		ps.escribirCadena(ACLParser.guardarPosicionAbsoluta(posicion, x, y, z, p, r));
+		ps.escribirCadena(ACLParser.guardarPosicionAbsoluta(posicion));
+		System.out.println(ps.getRespuesta());
+		ps.escribirCadena(ACLParser.numero(x));
+		System.out.println(ps.getRespuesta());
+		ps.escribirCadena(ACLParser.numero(y));
+		System.out.println(ps.getRespuesta());
+		ps.escribirCadena(ACLParser.numero(z));
+		System.out.println(ps.getRespuesta());
+		ps.escribirCadena(ACLParser.numero(p));
+		System.out.println(ps.getRespuesta());
+		ps.escribirCadena(ACLParser.numero(r));
+		System.out.println(ps.getRespuesta());
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
@@ -107,6 +131,10 @@ public class Scorbot extends Thread{
 	 */
 	public boolean moverLineal(String posicion){
 		ps.escribirCadena(ACLParser.moverLineal(posicion));
+		return comprobarEstadoDeRespuesta(ps.getRespuesta());
+	}
+	public boolean mover(String posicion){
+		ps.escribirCadena(ACLParser.mover(posicion));
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
@@ -140,45 +168,101 @@ public class Scorbot extends Thread{
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
-	public void describirTrazo() {
+	public void describirTrazoTiempoIrreal() {
 		LinkedList<Point> trazo = trazos.consumir();
 		Iterator<Point> iterator = trazo.iterator();
 		Point virtual=null, real=null;
-		int i =2;
+		int i =3;
 		
-		declararPosicion(1+"");
+		declararPosicion(2+"");
 		virtual = iterator.next();
 		real=ConversorCoordenadas.convertir(virtual);
-		guardarPosicionAbsoluta(i+"", real.x, real.y, 1000, -900, 0);
-		moverLineal(1+"");
+		guardarPosicionAbsoluta(2+"", real.x, real.y, 1000, -900, 0);
+		controlOn();
+		mover(2+"");
 		
 		
 		for (; iterator.hasNext();i++) {
 			declararPosicion(i+"");
 			real=ConversorCoordenadas.convertir(virtual);
 			guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
-			moverLineal(i+"");
+			controlOn();
+			mover(i+"");
 			virtual = iterator.next();
 			
 		}
+		declararPosicion(i+"");
+		real=ConversorCoordenadas.convertir(virtual);
+		guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
+		controlOn();
+		mover(i+"");
+		
 		
 		declararPosicion(i+"");
 		guardarPosicionAbsoluta(i+"", real.x, real.y, 1000, -900, 0);
-		moverLineal(i+"");
+		controlOn();
+		mover(i+"");
 		
 
+	}
+	
+	public void describirTrazoContinuo(){
+		recorrer(declararGuardar());
+		
+		
+	}
+	
+	private void recorrer(int i) {
+		controlOn();
+		for (int j = 2; j < i+1; j++) {
+			mover(j+"");
+		}
+		
+	}
+
+	private int declararGuardar() {
+		LinkedList<Point> trazo = trazos.consumir();
+		Iterator<Point> iterator = trazo.iterator();
+		Point virtual=null, real=null;
+		int i =3;
+		
+		declararPosicion(2+"");
+		virtual = iterator.next();
+		real=ConversorCoordenadas.convertir(virtual);
+		guardarPosicionAbsoluta(2+"", real.x, real.y, 1000, -900, 0);		
+		
+		for (; iterator.hasNext();i++) {
+			declararPosicion(i+"");
+			real=ConversorCoordenadas.convertir(virtual);
+			guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
+			virtual = iterator.next();
+			
+		}
+		declararPosicion(i+"");
+		real=ConversorCoordenadas.convertir(virtual);
+		guardarPosicionAbsoluta(i+"", real.x, real.y, 100, -900, 0);
+		
+		
+		declararPosicion((i++)+"");
+		guardarPosicionAbsoluta(i+"", real.x, real.y, 1000, -900, 0);
+		
+		return i;
+	
 	}
 	
 	@Override
 	public void run() {
 		while (true) {
-			describirTrazo();
+			//describirTrazoTiempoIrreal();
+			describirTrazoContinuo();
 		}
 	}
+
+	public void vaciarSalida() {
+		ps.flush();
+		
+	}
 	
-	
-	//------SIN TERMINAR, HAY QUE AÑADIR LOS METODOS DE ACLPARSER COMPROBANDO LA RESPUESTA DEL ROBOT
-	//------PERO YA HE ACABAO UN POCO HASTA LAS COJONES DE JAVA POR HOY
 	
 
 }

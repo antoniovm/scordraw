@@ -24,6 +24,10 @@ public class ACLParser {
 	public static String moverLineal(String posicion){
 		return "MOVEL "+posicion.toUpperCase()+run;
 	}
+	
+	public static String mover(String posicion){
+		return "MOVE "+posicion.toUpperCase()+run;
+	}
 	/**
 	 * Almacena 5 coordenadas absolutas en la posicion dada (debe que estar previamente declarada)
 	 * @param posicion
@@ -34,8 +38,8 @@ public class ACLParser {
 	 * @param r
 	 * @return La instruccion en ACL
 	 */
-	public static String guardarPosicionAbsoluta(String posicion, int x, int y, int z, int p, int r) {
-		return "TEACH "+posicion.toUpperCase()+run+  x  +run+  y  +run+  z  +run+  p  +run+  r  +run;
+	public static String guardarPosicionAbsoluta(String posicion) {
+		return "TEACH "+posicion+run;
 
 	}
 	/**
@@ -75,7 +79,7 @@ public class ACLParser {
 	 * @return La instruccion en ACL
 	 */
 	public static String abortar() {
-		return "A "+run;
+		return "A"+run;
 	}
 	/**
 	 * Suspende el robot durante el tiempo indicado por parametro
@@ -99,6 +103,12 @@ public class ACLParser {
 	 * @return La instruccion en ACL
 	 */
 	public static String home() {
-		return "HOME "+run;
+		return "HOME"+run;
+	}
+	public static String controlOn() {
+		return "CON"+run;
+	}
+	public static String numero(int n) {
+		return n+""+run;
 	}
 }

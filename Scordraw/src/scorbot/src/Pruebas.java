@@ -1,14 +1,13 @@
 package scorbot.src;
 
 import java.awt.Point;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Vector;
+import java.io.BufferedReader;
 
-import javax.comm.*;
+import javax.comm.PortInUseException;
+import javax.comm.UnsupportedCommOperationException;
 public class Pruebas {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
@@ -16,38 +15,82 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 	trazos = new ColaCircularConcurrente<LinkedList<Point>>(3);
 	
 	Scorbot scb = new Scorbot(trazos);
-	scb.start();
+	
+	
+	if(!scb.estaActivo()){
+		System.out.println("FALLO!");
+		System.exit(-1);
+	}
+	scb.vaciarSalida();
+	
+	//System.out.println("Home: "+scb.home());
+	System.out.println("Control On: "+scb.controlOn());
+	
 	
 	//trazos.encolar(new LinkedList<Point>());
-	PuertoSerie ps = new PuertoSerie("COM4");
-	PuertoSerie.mostrarPuertosSerieDisponibles();
+	//PuertoSerie ps = new PuertoSerie("COM4");
+	//PuertoSerie.mostrarPuertosSerieDisponibles();
 
 	String comando,recibido;
-	if(ps.abrir())
+	/*if(ps.abrir())
 		System.out.print("Comunicacion establecida");
 	else{
 		System.out.print("No se ha podido establecer comunicacion");
 		//System.exit(-1);
 	}
-	ps.flush();
+	ps.flush();*/
 	Interfaz interf = new Interfaz(trazos);
 	//ps.escribirCadena(ACLParser.mover(100, 10, 50, -900, 0));
 	
+	int n=2,x,y,z,p,r;
 	
-	while(true){
-		/*System.out.print("\n>");
-		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine().toUpperCase()+'\r';
-		ps.escribirCadena(comando);*/
+	String posicion="P"+2;
+	
+	scb.start();
+	/*while(true){
+		System.out.print("\n>");
+		comando=(new BufferedReader(new InputStreamReader(System.in))).readLine().toUpperCase()+'\r'+'\n';
+		scb.ps.escribirCadena(comando);
 		
+		//comando=leer().toUpperCase()+'\r';
+		System.out.println("Velocidad: "+scb.velocidad(20));
 		
+		System.out.println("Declarar: "+scb.declararPosicion(posicion));
+		System.out.print("X: ");
+		x=Integer.parseInt(leer());
+		System.out.print("Y: ");
+		y=Integer.parseInt(leer());
+		System.out.print("Z: ");
+		z=Integer.parseInt(leer());
+		System.out.print("P: ");
+		p=Integer.parseInt(leer());
+		System.out.print("R: ");
+		r=Integer.parseInt(leer());
 		
+		//scb.ps.escribirCadena("COFF"+'\r');
+		//scb.ps.escribirCadena("TEACH "+posicion+'\r');
+		//System.out.println(scb.ps.getRespuesta());
+		System.out.println("Teach: "+scb.guardarPosicionAbsoluta(posicion, x,y,z,p,r));
 		
-	}
+		//System.out.println("Control On: "+scb.controlOn());
+		
+		System.out.println("Mover: "+scb.mover(posicion));
+		
+	}*/
 
 
 
 }
-
+	public static String leer() {
+		try {
+			return (new BufferedReader(new InputStreamReader(System.in))).readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
 }
 
 /*
