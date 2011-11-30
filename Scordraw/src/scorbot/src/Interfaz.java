@@ -57,6 +57,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		inicializar(trazos);
 		addWindowListener(this);
 		setVisible(true);
+		setResizable(false);
 	}
 
 	private void inicializar(ColaCircularConcurrente<LinkedList<Point>> trazos) {
