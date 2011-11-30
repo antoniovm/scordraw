@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -23,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 
-public class Interfaz extends JFrame implements WindowListener{
+public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	private JScrollPane scrollConsola;
 	private Lienzo lienzo;
 	private JTextArea consola;
@@ -33,6 +34,7 @@ public class Interfaz extends JFrame implements WindowListener{
 	private JMenuBar barra;
 	private JMenu mArchivo, mAyuda;
 	private JMenuItem iSalir, iAbout;
+	private JDialog dAbout;
 	private Scorbot scb;
 	private JLabel lProgreso, lNumeroMuestras;
 	
@@ -68,6 +70,12 @@ public class Interfaz extends JFrame implements WindowListener{
 		barra.add(mAyuda);
 		
 		setJMenuBar(barra);
+		
+		iSalir.addActionListener(this);
+		iAbout.addActionListener(this);
+		
+		dAbout = new JDialog(this, "Acerca de Scordraw", true);
+		
 		
 		lProgreso = new JLabel("Esperando nuevo trazo...");
 		lNumeroMuestras = new JLabel("Seleccione numero de muestras:");
@@ -184,6 +192,17 @@ public class Interfaz extends JFrame implements WindowListener{
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == iSalir) {
+			System.exit(0);
+		}
+		if (e.getSource() == iAbout) {
+			dAbout.setVisible(true);
+		}
 		
 	}
 }
