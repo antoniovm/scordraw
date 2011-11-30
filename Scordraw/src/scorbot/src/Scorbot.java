@@ -10,6 +10,10 @@ import javax.swing.JProgressBar;
 public class Scorbot extends Thread{
 
 	private PuertoSerie ps;
+	private LinkedList<String> variablesPosicion;
+	private ColaCircularConcurrente<LinkedList<Point>> trazos;
+	private Interfaz interfaz;
+	
 	public PuertoSerie getPs() {
 		return ps;
 	}
@@ -42,22 +46,15 @@ public class Scorbot extends Thread{
 		this.interfaz = interfaz;
 	}
 
-	public void setProgreso(JProgressBar progreso) {
-		this.progreso = progreso;
-	}
-
-	private LinkedList<String> variablesPosicion;
-	private ColaCircularConcurrente<LinkedList<Point>> trazos;
-	private JProgressBar progreso;
-	private Interfaz interfaz;
 	
-	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos, JProgressBar progreso) {
+
+
+	
+	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		//PuertoSerie.mostrarPuertosSerieDisponibles();
-		this.progreso = progreso;
 		ps=new PuertoSerie("COM4");
 		variablesPosicion = new LinkedList<String>();
 		this.trazos=trazos;
-		this.progreso = progreso;
 		ps.abrir();
 	}
 	
@@ -136,7 +133,7 @@ public class Scorbot extends Thread{
 	 */
 	public boolean guardarPosicionAbsoluta(String posicion, int x, int y, int z, int p, int r) {
 		ps.escribirCadena(ACLParser.guardarPosicionAbsoluta(posicion));
-		interfaz.getConsola().append(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"a");
 		ps.escribirCadena(ACLParser.numero(x));
 		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(y));
@@ -250,11 +247,19 @@ public class Scorbot extends Thread{
 	
 	public void describirTrazoContinuo(){
 		recorrer(declararGuardar());
-		
+		interfaz.getlProgreso().setText("Fin del trazado!");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		interfaz.getPb().setValue(0);
 		
 	}
 	
 	private void recorrer(int i) {
+		interfaz.getlProgreso().setText("Recorriendo trayectoria...");
 		controlOn();
 		for (int j = 2; j < i+1; j++) {
 			mover("V["+j+"]");
@@ -263,24 +268,26 @@ public class Scorbot extends Thread{
 	}
 
 	private int declararGuardar() {
+		interfaz.getlProgreso().setText("Esperando a nuevo trazo...");
 		LinkedList<Point> trazo = trazos.consumir();
+		interfaz.getlProgreso().setText("Almacenando posiciones...");
 		Iterator<Point> iterator = trazo.iterator();
 		Point virtual=null, real=null;
 		int i =3;
-		progreso.setValue(0);
+		interfaz.getPb().setValue(0);
 		declararVectorPosiciones("V", 8);
 		//declararPosicion(2+"");
 		virtual = iterator.next();
 		real=ConversorCoordenadas.convertir(virtual);
 		guardarPosicionAbsoluta("V[2]", real.x, real.y, 1000, -900, 0);		
-		progreso.setValue(100/(trazo.size()+2)*1);
+		interfaz.getPb().setValue(100/(trazo.size()+2)*1);
 		
 		for (; iterator.hasNext();i++) {
 			//declararPosicion(i+"");
 			real=ConversorCoordenadas.convertir(virtual);
 			guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
 			virtual = iterator.next();
-			progreso.setValue(100/(trazo.size()+2)*(i-1));
+			interfaz.getPb().setValue(100/(trazo.size()+2)*(i-1));
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -292,12 +299,12 @@ public class Scorbot extends Thread{
 		//declararPosicion(i+"");
 		real=ConversorCoordenadas.convertir(virtual);
 		guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
-		progreso.setValue(100/(trazo.size()+2)*(i-1));
+		interfaz.getPb().setValue(100/(trazo.size()+2)*(i-1));
 		
 		//declararPosicion((i++)+"");
 		guardarPosicionAbsoluta("V["+(++i)+"]", real.x, real.y, 1000, -900, 0);
-		progreso.setValue(100/(trazo.size()+2)*(i-1));
-		progreso.setValue(100);
+		interfaz.getPb().setValue(100/(trazo.size()+2)*(i-1));
+		interfaz.getPb().setValue(100);
 		
 		return i;
 	
@@ -321,9 +328,7 @@ public class Scorbot extends Thread{
 		
 	}
 
-	public JProgressBar getProgreso() {
-		return progreso;
-	}
+	
 	
 	
 

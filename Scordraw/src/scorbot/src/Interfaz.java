@@ -1,5 +1,10 @@
 package scorbot.src;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -49,7 +54,6 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		lienzo = new Lienzo(trazos);
 		consola = new JTextArea(">",20,20);
 		consola.setLineWrap(true);
-		pb = scb.getProgreso();
 		scrollConsola = new JScrollPane(consola);
 		scrollConsola.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pinza = new JButton("Abrir Pinza");
@@ -77,10 +81,24 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		dAbout = new JDialog(this, "Acerca de Scordraw", true);
 		
 		
-		lProgreso = new JLabel("Esperando nuevo trazo...");
+		lProgreso = new JLabel("Esperando a nuevo trazo...");
 		lNumeroMuestras = new JLabel("Seleccione numero de muestras:");
 		GridBagConstraints constraints = new GridBagConstraints();
 		
+		
+		pb = new JProgressBar(0,100){
+			@Override
+			public void paint(Graphics g) {
+				super.paint(g);
+				g.setFont(new Font(g.getFont().getFontName(), 0, 20));
+				FontMetrics fm =g.getFontMetrics();
+				int i=fm.stringWidth(this.getValue()/this.getMaximum()*100+"%");
+				g.setColor(Color.black);
+				g.drawString(this.getValue()+"%", getWidth()/2-i/2, getHeight()/2+7);
+				
+			}
+		};
+		pb.setPreferredSize(new Dimension(pb.getWidth(), 30));
 		
 		limpiar.addActionListener(new ActionListener() {
 			

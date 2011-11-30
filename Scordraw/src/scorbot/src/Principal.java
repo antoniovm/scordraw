@@ -19,20 +19,9 @@ public class Principal {
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
 	trazos = new ColaCircularConcurrente<LinkedList<Point>>(3);
-	JProgressBar progreso = new JProgressBar(0,100){
-		@Override
-		public void paint(Graphics g) {
-			super.paint(g);
-			g.setFont(new Font(g.getFont().getFontName(), 0, 20));
-			FontMetrics fm =g.getFontMetrics();
-			int i=fm.stringWidth(this.getValue()/this.getMaximum()*100+"%");
-			g.setColor(Color.black);
-			g.drawString(this.getValue()+"%", getWidth()/2-i/2, getHeight()/2+7);
-			
-		}
-	};
-	progreso.setPreferredSize(new Dimension(progreso.getWidth(), 30));
-	Scorbot scb = new Scorbot(trazos, progreso);
+	
+	
+	Scorbot scb = new Scorbot(trazos);
 	
 	
 	/*if(!scb.estaActivo()){
