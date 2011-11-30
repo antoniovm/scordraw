@@ -12,8 +12,8 @@ public class ConversorCoordenadas {
 		//desplazar el origen
 		xReal -= 1800;
 		yReal += 1500;
-		System.out.println("Lienzo: ("+pLienzo.x +  ", " + pLienzo.y+")");
-		System.out.println("Mesa: ("+xReal +  ", " + -yReal+")");
+		//System.out.println("Lienzo: ("+pLienzo.x +  ", " + pLienzo.y+")");
+		//System.out.println("Mesa: ("+xReal +  ", " + -yReal+")");
 		return new Point(xReal, -yReal);
 		
 	}

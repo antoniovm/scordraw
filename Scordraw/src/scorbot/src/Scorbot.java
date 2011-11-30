@@ -9,10 +9,47 @@ import javax.swing.JProgressBar;
 
 public class Scorbot extends Thread{
 
-	PuertoSerie ps;
-	LinkedList<String> variablesPosicion;
-	ColaCircularConcurrente<LinkedList<Point>> trazos;
-	JProgressBar progreso;
+	private PuertoSerie ps;
+	public PuertoSerie getPs() {
+		return ps;
+	}
+
+	public void setPs(PuertoSerie ps) {
+		this.ps = ps;
+	}
+
+	public LinkedList<String> getVariablesPosicion() {
+		return variablesPosicion;
+	}
+
+	public void setVariablesPosicion(LinkedList<String> variablesPosicion) {
+		this.variablesPosicion = variablesPosicion;
+	}
+
+	public ColaCircularConcurrente<LinkedList<Point>> getTrazos() {
+		return trazos;
+	}
+
+	public void setTrazos(ColaCircularConcurrente<LinkedList<Point>> trazos) {
+		this.trazos = trazos;
+	}
+
+	public Interfaz getInterfaz() {
+		return interfaz;
+	}
+
+	public void setInterfaz(Interfaz interfaz) {
+		this.interfaz = interfaz;
+	}
+
+	public void setProgreso(JProgressBar progreso) {
+		this.progreso = progreso;
+	}
+
+	private LinkedList<String> variablesPosicion;
+	private ColaCircularConcurrente<LinkedList<Point>> trazos;
+	private JProgressBar progreso;
+	private Interfaz interfaz;
 	
 	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos, JProgressBar progreso) {
 		//PuertoSerie.mostrarPuertosSerieDisponibles();
@@ -83,7 +120,7 @@ public class Scorbot extends Thread{
 	 * @return true si asi es, false en caso contrario
 	 */
 	private boolean comprobarEstadoDeRespuesta(String respuesta) {
-		System.out.println(respuesta.trim());
+		interfaz.getConsola().append(respuesta.trim());
 		return respuesta.contains("Done.");
 	}
 	
@@ -99,15 +136,15 @@ public class Scorbot extends Thread{
 	 */
 	public boolean guardarPosicionAbsoluta(String posicion, int x, int y, int z, int p, int r) {
 		ps.escribirCadena(ACLParser.guardarPosicionAbsoluta(posicion));
-		System.out.println(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(x));
-		System.out.println(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(y));
-		System.out.println(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(z));
-		System.out.println(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(p));
-		System.out.println(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(r));
 		System.out.println(ps.getRespuesta());
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());

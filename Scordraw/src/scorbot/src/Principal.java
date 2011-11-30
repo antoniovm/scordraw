@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import javax.comm.PortInUseException;
 import javax.comm.UnsupportedCommOperationException;
 import javax.swing.JProgressBar;
-public class Pruebas {
+public class Principal {
 
 public static void main(String[] args) throws IOException, UnsupportedCommOperationException, PortInUseException {
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
@@ -39,10 +39,10 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 		System.out.println("FALLO!");
 		System.exit(-1);
 	}*/
-	scb.vaciarSalida();
+	
 	
 	//System.out.println("Home: "+scb.home());
-	System.out.println("Control On: "+scb.controlOn());
+	
 	
 	
 	//trazos.encolar(new LinkedList<Point>());
@@ -59,7 +59,9 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 	ps.flush();*/
 	Interfaz interf = new Interfaz(trazos, scb);
 	//ps.escribirCadena(ACLParser.mover(100, 10, 50, -900, 0));
-	
+	scb.setInterfaz(interf);
+	scb.vaciarSalida();
+	System.out.println("Control On: "+scb.controlOn());
 	int n=2,x,y,z,p,r;
 	
 	String posicion="P"+2;

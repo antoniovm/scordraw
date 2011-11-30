@@ -205,4 +205,133 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		}
 		
 	}
+
+	public JScrollPane getScrollConsola() {
+		return scrollConsola;
+	}
+
+	public void setScrollConsola(JScrollPane scrollConsola) {
+		this.scrollConsola = scrollConsola;
+	}
+
+	public Lienzo getLienzo() {
+		return lienzo;
+	}
+
+	public void setLienzo(Lienzo lienzo) {
+		this.lienzo = lienzo;
+	}
+
+	public JTextArea getConsola() {
+		return consola;
+	}
+
+	public void setConsola(JTextArea consola) {
+		this.consola = consola;
+	}
+
+	public JButton getPinza() {
+		return pinza;
+	}
+
+	public void setPinza(JButton pinza) {
+		this.pinza = pinza;
+	}
+
+	public JButton getLimpiar() {
+		return limpiar;
+	}
+
+	public void setLimpiar(JButton limpiar) {
+		this.limpiar = limpiar;
+	}
+
+	public JComboBox getCb() {
+		return cb;
+	}
+
+	public void setCb(JComboBox cb) {
+		this.cb = cb;
+	}
+
+	public JProgressBar getPb() {
+		return pb;
+	}
+
+	public void setPb(JProgressBar pb) {
+		this.pb = pb;
+	}
+
+	public JMenuBar getBarra() {
+		return barra;
+	}
+
+	public void setBarra(JMenuBar barra) {
+		this.barra = barra;
+	}
+
+	public JMenu getmArchivo() {
+		return mArchivo;
+	}
+
+	public void setmArchivo(JMenu mArchivo) {
+		this.mArchivo = mArchivo;
+	}
+
+	public JMenu getmAyuda() {
+		return mAyuda;
+	}
+
+	public void setmAyuda(JMenu mAyuda) {
+		this.mAyuda = mAyuda;
+	}
+
+	public JMenuItem getiSalir() {
+		return iSalir;
+	}
+
+	public void setiSalir(JMenuItem iSalir) {
+		this.iSalir = iSalir;
+	}
+
+	public JMenuItem getiAbout() {
+		return iAbout;
+	}
+
+	public void setiAbout(JMenuItem iAbout) {
+		this.iAbout = iAbout;
+	}
+
+	public JDialog getdAbout() {
+		return dAbout;
+	}
+
+	public void setdAbout(JDialog dAbout) {
+		this.dAbout = dAbout;
+	}
+
+	public Scorbot getScb() {
+		return scb;
+	}
+
+	public void setScb(Scorbot scb) {
+		this.scb = scb;
+	}
+
+	public JLabel getlProgreso() {
+		return lProgreso;
+	}
+
+	public void setlProgreso(JLabel lProgreso) {
+		this.lProgreso = lProgreso;
+	}
+
+	public JLabel getlNumeroMuestras() {
+		return lNumeroMuestras;
+	}
+
+	public void setlNumeroMuestras(JLabel lNumeroMuestras) {
+		this.lNumeroMuestras = lNumeroMuestras;
+	}
+	
 }
