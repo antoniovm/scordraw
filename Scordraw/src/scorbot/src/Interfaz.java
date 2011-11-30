@@ -57,6 +57,8 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		scrollConsola = new JScrollPane(consola);
 		scrollConsola.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		bAbortar = new JButton("Abortar");
+		bAbortar.setBackground(new Color(0x00ff5555));
+		bAbortar.setForeground(Color.black);
 		bLimpiar = new JButton("Limpiar");
 		
 		setTitle("Scordraw");
