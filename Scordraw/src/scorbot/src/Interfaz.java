@@ -27,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 
 public class Interfaz extends JFrame implements WindowListener, ActionListener{
@@ -44,6 +45,14 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	private JLabel lProgreso, lNumeroMuestras;
 	
 	public Interfaz(ColaCircularConcurrente<LinkedList<Point>> trazos, Scorbot scb) {
+		try
+		{
+		   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e)
+		{
+		   e.printStackTrace();
+		}
 		this.scb = scb;
 		inicializar(trazos);
 		addWindowListener(this);
@@ -142,6 +151,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		getContentPane().add(lProgreso, formato(0,3,4,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
 		getContentPane().add(pb,formato(0,4,4,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
+		
 		
 		
 		

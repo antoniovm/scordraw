@@ -48,8 +48,8 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		antialiasing(g);
 		g.drawLine(a.x, a.y, b.x, b.y);
 		if(limpiar){
-			super.paint(g);
 			limpiar=false;
+			super.paint(g);
 		}
 		g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
 		
@@ -141,6 +141,8 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 				repaint();
 			}
 		}.start();
+		
+		
 		
 		
 		
