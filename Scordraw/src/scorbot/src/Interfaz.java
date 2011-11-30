@@ -20,6 +20,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,6 +35,9 @@ public class Interfaz extends JFrame implements WindowListener{
 	private JButton pinza, limpiar;
 	private JComboBox cb;
 	private JProgressBar pb;
+	private JMenuBar barra;
+	private JMenu mArchivo, mAyuda;
+	private JMenuItem iSalir, iAbout;
 	private Scorbot scb;
 	
 	public Interfaz(ColaCircularConcurrente<LinkedList<Point>> trazos, Scorbot scb) {
@@ -50,6 +56,23 @@ public class Interfaz extends JFrame implements WindowListener{
 		scrollConsola.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pinza = new JButton("Abrir Pinza");
 		limpiar = new JButton("Limpiar");
+		
+		setTitle("Scordraw");
+		
+		//MENUBAR
+		barra = new JMenuBar();
+		mArchivo = new JMenu("Archivo");
+		mAyuda = new JMenu("Ayuda");
+		iSalir = new JMenuItem("Salir");
+		iAbout = new JMenuItem("Acerca de");
+		
+		mArchivo.add(iSalir);
+		mAyuda.add(iAbout);
+		barra.add(mArchivo);
+		barra.add(mAyuda);
+		
+		setJMenuBar(barra);
+		
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
