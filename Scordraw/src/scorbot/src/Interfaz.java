@@ -1,25 +1,20 @@
 package scorbot.src;
 
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.LayoutManager;
+import java.awt.Label;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -39,6 +34,7 @@ public class Interfaz extends JFrame implements WindowListener{
 	private JMenu mArchivo, mAyuda;
 	private JMenuItem iSalir, iAbout;
 	private Scorbot scb;
+	private JLabel lProgreso, lNumeroMuestras;
 	
 	public Interfaz(ColaCircularConcurrente<LinkedList<Point>> trazos, Scorbot scb) {
 		this.scb = scb;
@@ -73,7 +69,8 @@ public class Interfaz extends JFrame implements WindowListener{
 		
 		setJMenuBar(barra);
 		
-		
+		lProgreso = new JLabel("Esperando nuevo trazo...");
+		lNumeroMuestras = new JLabel("Seleccione numero de muestras:");
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		
@@ -108,12 +105,14 @@ public class Interfaz extends JFrame implements WindowListener{
 		
 		getContentPane().setLayout(new GridBagLayout());
 		
-		getContentPane().add(lienzo, formato(0,0,3,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
+		getContentPane().add(lienzo, formato(0,0,4,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
 		getContentPane().add(pinza, formato(0,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
 		getContentPane().add(limpiar, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(cb, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(scrollConsola, formato(3,0,2,4,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
-		getContentPane().add(pb,formato(0,3,3,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(1,1,1,1)));
+		getContentPane().add(lNumeroMuestras, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(cb, formato(3,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(scrollConsola, formato(4,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
+		getContentPane().add(lProgreso, formato(0,3,4,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
+		getContentPane().add(pb,formato(0,4,4,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
 		
 		
