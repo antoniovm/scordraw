@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -24,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -92,7 +94,6 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		
 		dAbout = new JDialog(this, "Acerca de Scordraw", true);
 		
-		
 		lProgreso = new JLabel("Esperando a nuevo trazo...");
 		lNumeroMuestras = new JLabel("Seleccione numero de muestras:");
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -153,10 +154,37 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		getContentPane().add(pb,formato(0,4,4,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
 		
-		
+		configurarDialog(dAbout);
 		
 		
 	}
+	private void configurarDialog(JDialog dAbout) {
+		JLabel texto = new JLabel("AAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAA");
+		JPanel panelSuperior = new JPanel();
+		panelSuperior.setBackground(Color.white);
+		panelSuperior.setLayout(new GridBagLayout());
+		panelSuperior.add(new JButton("IMAGEN"), formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		panelSuperior.add(texto, formato(1,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		
+		JPanel panelInferior = new JPanel();
+		panelInferior.setLayout(new GridBagLayout());
+		panelInferior.add(new JButton("Aceptar"), formato(0,0,2,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		
+		dAbout.setLayout(new GridBagLayout());
+		dAbout.add(panelSuperior,formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(0, 0, 2, 0)));
+		dAbout.add(panelInferior,formato(0,1,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		
+		//dAbout.add(new JButton("IMAGEN"));
+		//dAbout.add(texto);
+		dAbout.pack();
+		Dimension dPantalla, dVentana;
+		dPantalla = this.getSize(); // Dimensiones en pixels de la pantalla.
+        dVentana = dAbout.getSize(); // Dimensiones en pixels de la ventana.
+        // Situamos la ventana en el centro de la pantalla.
+        dAbout.setLocation((dPantalla.width - dVentana.width) / 2, (dPantalla.height - dVentana.height) / 2);
+		
+	}
+
 	private GridBagConstraints formato(int x, int y, int width, int height, int anchor, int fill, Insets insets) {
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor=anchor;
