@@ -4,25 +4,28 @@ import java.awt.Point;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javax.swing.JProgressBar;
+
 
 public class Scorbot extends Thread{
 
 	PuertoSerie ps;
 	LinkedList<String> variablesPosicion;
 	ColaCircularConcurrente<LinkedList<Point>> trazos;
-	Integer progreso;
+	JProgressBar progreso;
 	
-	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos, Integer progreso) {
+	public Scorbot(ColaCircularConcurrente<LinkedList<Point>> trazos, JProgressBar progreso) {
 		//PuertoSerie.mostrarPuertosSerieDisponibles();
 		this.progreso = progreso;
 		ps=new PuertoSerie("COM4");
 		variablesPosicion = new LinkedList<String>();
 		this.trazos=trazos;
+		this.progreso = progreso;
 		ps.abrir();
 	}
 	
 	public boolean estaActivo() {
-		return ps.estaDisponible();
+		return ps.estaAbierto();
 
 	}
 	
@@ -227,26 +230,37 @@ public class Scorbot extends Thread{
 		Iterator<Point> iterator = trazo.iterator();
 		Point virtual=null, real=null;
 		int i =3;
+		progreso.setValue(0);
 		declararVectorPosiciones("V", 8);
 		//declararPosicion(2+"");
 		virtual = iterator.next();
 		real=ConversorCoordenadas.convertir(virtual);
 		guardarPosicionAbsoluta("V[2]", real.x, real.y, 1000, -900, 0);		
+		progreso.setValue(100/(trazo.size()+2)*1);
 		
 		for (; iterator.hasNext();i++) {
 			//declararPosicion(i+"");
 			real=ConversorCoordenadas.convertir(virtual);
 			guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
 			virtual = iterator.next();
+			progreso.setValue(100/(trazo.size()+2)*(i-1));
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		//declararPosicion(i+"");
 		real=ConversorCoordenadas.convertir(virtual);
 		guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
-		
+		progreso.setValue(100/(trazo.size()+2)*(i-1));
 		
 		//declararPosicion((i++)+"");
 		guardarPosicionAbsoluta("V["+(++i)+"]", real.x, real.y, 1000, -900, 0);
+		progreso.setValue(100/(trazo.size()+2)*(i-1));
+		progreso.setValue(100);
 		
 		return i;
 	
@@ -263,6 +277,15 @@ public class Scorbot extends Thread{
 	public void vaciarSalida() {
 		ps.flush();
 		
+	}
+
+	public boolean cerrar() {
+		return ps.cerrar();
+		
+	}
+
+	public JProgressBar getProgreso() {
+		return progreso;
 	}
 	
 	

@@ -82,7 +82,7 @@ public class PuertoSerie {
 	 * Comprueba si el puerto está disponible
 	 * @return true si lo esta, false en caso contrario
 	 */
-	public boolean estaDisponible() {
+	public boolean estaAbierto() {
 		return puertoSerie!=null;
 
 	}
@@ -92,7 +92,7 @@ public class PuertoSerie {
 	 * @return	true si se ha escrito correctamente, false en caso contrario
 	 */
 	public boolean escribirCaracter(char c) {
-		if(!estaDisponible()) return false;
+		if(!estaAbierto()) return false;
 		
 		try {
 			puertoSerie.getOutputStream().write(c);
@@ -109,7 +109,7 @@ public class PuertoSerie {
 	 * @return true si se ha enviado correctamente, false en caso contrario
 	 */
 	public boolean escribirCadena(String comando) {
-		if(!estaDisponible()) return false;
+		if(!estaAbierto()) return false;
 		String leido="";
 		for (int i = 0; i < comando.length(); i++) {
 			escribirCaracter(comando.charAt(i));
@@ -145,7 +145,7 @@ public class PuertoSerie {
 	 */
 	public String leer() {
 		byte [] bytes;
-		if(!estaDisponible()) return null;
+		if(!estaAbierto()) return null;
 			try {
 				//Tamaño del array = numero de bytes disponibles
 				bytes = new byte [puertoSerie.getInputStream().available()+1];
@@ -166,7 +166,7 @@ public class PuertoSerie {
 	 * Vacia el flujo de entrada
 	 */
 	public void flush() {
-		if(!estaDisponible()) return;
+		if(!estaAbierto()) return;
 		int disponibles=0;
 		try {
 			disponibles = puertoSerie.getInputStream().available();
@@ -184,6 +184,15 @@ public class PuertoSerie {
 				e.printStackTrace();
 			}
 		}
+		
+	}
+	public boolean cerrar() {
+		if(estaAbierto()){
+			puertoSerie.close();
+			puertoSerie=null;
+			return true;
+		}
+		return false;
 		
 	}
 }

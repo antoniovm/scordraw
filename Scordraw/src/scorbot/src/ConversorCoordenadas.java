@@ -6,8 +6,8 @@ public class ConversorCoordenadas {
 	
 	public static Point convertir(Point pLienzo){
 		//escalar
-		int xReal = (int) (pLienzo.getX()*3600/360);
-		int yReal = (int) (pLienzo.getY()*1800/180);
+		int xReal = (int) (pLienzo.getX()*3600/(360*2));
+		int yReal = (int) (pLienzo.getY()*1800/(180*2));
 		
 		//desplazar el origen
 		xReal -= 1800;
