@@ -33,7 +33,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	private JScrollPane scrollConsola;
 	private Lienzo lienzo;
 	private JTextArea consola;
-	private JButton pinza, limpiar;
+	private JButton bAbortar, bLimpiar;
 	private JComboBox cb;
 	private JProgressBar pb;
 	private JMenuBar barra;
@@ -56,8 +56,8 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		consola.setLineWrap(true);
 		scrollConsola = new JScrollPane(consola);
 		scrollConsola.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		pinza = new JButton("Abrir Pinza");
-		limpiar = new JButton("Limpiar");
+		bAbortar = new JButton("Abortar");
+		bLimpiar = new JButton("Limpiar");
 		
 		setTitle("Scordraw");
 		
@@ -100,7 +100,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		};
 		pb.setPreferredSize(new Dimension(pb.getWidth(), 30));
 		
-		limpiar.addActionListener(new ActionListener() {
+		bLimpiar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -109,11 +109,11 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 			}
 		});
 		
-		pinza.addActionListener(new ActionListener() {
+		bAbortar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				prompt("OPEN \r\n>");				
+				scb.abortar();				
 			}
 		});
 	
@@ -132,8 +132,8 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		getContentPane().setLayout(new GridBagLayout());
 		
 		getContentPane().add(lienzo, formato(0,0,4,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
-		getContentPane().add(pinza, formato(0,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(limpiar, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(bAbortar, formato(0,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(bLimpiar, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
 		getContentPane().add(lNumeroMuestras, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
 		getContentPane().add(cb, formato(3,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
 		getContentPane().add(scrollConsola, formato(4,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
@@ -248,20 +248,20 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		this.consola = consola;
 	}
 
-	public JButton getPinza() {
-		return pinza;
+	public JButton getAbortar() {
+		return bAbortar;
 	}
 
-	public void setPinza(JButton pinza) {
-		this.pinza = pinza;
+	public void setAbortar(JButton abortar) {
+		this.bAbortar = abortar;
 	}
 
 	public JButton getLimpiar() {
-		return limpiar;
+		return bLimpiar;
 	}
 
 	public void setLimpiar(JButton limpiar) {
-		this.limpiar = limpiar;
+		this.bLimpiar = limpiar;
 	}
 
 	public JComboBox getCb() {

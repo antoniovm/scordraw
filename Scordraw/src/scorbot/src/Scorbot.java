@@ -133,7 +133,7 @@ public class Scorbot extends Thread{
 	 */
 	public boolean guardarPosicionAbsoluta(String posicion, int x, int y, int z, int p, int r) {
 		ps.escribirCadena(ACLParser.guardarPosicionAbsoluta(posicion));
-		interfaz.getConsola().append(ps.getRespuesta()+"a");
+		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(x));
 		interfaz.getConsola().append(ps.getRespuesta());
 		ps.escribirCadena(ACLParser.numero(y));
