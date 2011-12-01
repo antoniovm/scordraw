@@ -71,7 +71,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		(consola = new JTextArea(">",20,30)).setEditable(false);
 		consola.setLineWrap(true);
 		consola.setPreferredSize(consola.getSize());
-		consola.setMinimumSize(consola.getSize());
+		//consola.setMinimumSize(consola.getSize());
 		sbConsola = new JScrollPane(consola);
 		sbConsola.setAutoscrolls(true);
 		sbConsola.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

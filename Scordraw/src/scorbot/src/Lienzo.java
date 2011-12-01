@@ -30,7 +30,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		this.trazos = trazos;
 		trazo = new LinkedList<Point>();
 		setPreferredSize(new Dimension(360*2,180*2));
-		setMinimumSize(new Dimension(360*2,180*2));
+		//setMinimumSize(new Dimension(360*2,180*2));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		repaint();
@@ -96,7 +96,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	 */
 	public void limpiarPantalla() {
 		limpiar=true;
-		repaint();
+		//repaint();
 	}
 	
 	private void capturarPunto(Point p) {
@@ -140,7 +140,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 				trazo=limitarPuntos(trazo,numMuestras);
 				trazos.encolar(trazo);
 				nuevoTrazado=true;
-				repaint();
+				//repaint();
 			}
 		}.start();
 		
@@ -168,7 +168,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		a=(Point) b.clone();
 		b.setLocation(e.getX(), e.getY());	//Modificar valores de b, para pintar una rectadesde a hasta b
 		capturarPunto(b);	//Añadir a la lista de puntos que forma un trazo
-		repaint();
+		//repaint();
 		
 	}
 
