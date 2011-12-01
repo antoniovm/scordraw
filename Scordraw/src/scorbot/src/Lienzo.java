@@ -46,6 +46,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 
 	@Override
 	public void paint(Graphics g) {
+		validate();
 		antialiasing(g);
 		g.drawLine(a.x, a.y, b.x, b.y);
 		if(limpiar){

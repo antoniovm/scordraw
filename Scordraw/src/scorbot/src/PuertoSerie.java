@@ -135,6 +135,7 @@ public class PuertoSerie {
 	
 	public String getRespuesta() {
 		String respuesta=this.respuesta;
+		System.out.println(respuesta); //QUITAR
 		this.respuesta="";
 		return respuesta;
 	}

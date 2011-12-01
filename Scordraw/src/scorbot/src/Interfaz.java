@@ -36,12 +36,13 @@ import javax.swing.UIManager;
 
 
 public class Interfaz extends JFrame implements WindowListener, ActionListener{
-	private JScrollPane scrollConsola;
-	private Lienzo lienzo;
+	
+	private JScrollPane sbConsola;
+	private Lienzo pLienzo;
 	private JTextArea consola;
-	private JButton bAbortar, bLimpiar, bHome, bPincel;
-	private JComboBox cb;
-	private JProgressBar pb;
+	private JButton bAbortar, bLimpiarLienzo,bLimpiarConsola, bHome, bCogerPincel, bCon, bCoff;
+	private JComboBox cbMuestras;
+	private JProgressBar pbAlmacenarPos;
 	private JMenuBar barra;
 	private JMenu mArchivo, mAyuda;
 	private JMenuItem iSalir, iAbout;
@@ -66,21 +67,26 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	}
 
 	private void inicializar(ColaCircularConcurrente<LinkedList<Point>> trazos) {
-		lienzo = new Lienzo(trazos);
+		pLienzo = new Lienzo(trazos);
 		(consola = new JTextArea(">",20,30)).setEditable(false);
 		consola.setLineWrap(true);
 		consola.setPreferredSize(consola.getSize());
 		consola.setMinimumSize(consola.getSize());
-		scrollConsola = new JScrollPane(consola);
-		scrollConsola.setAutoscrolls(true);
-		scrollConsola.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		sbConsola = new JScrollPane(consola);
+		sbConsola.setAutoscrolls(true);
+		sbConsola.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		//BOTONES
 		bAbortar = new JButton("Abortar");
 		bAbortar.setBackground(new Color(0x00ff5555));
 		bAbortar.setForeground(Color.black);
-		bLimpiar = new JButton("Limpiar");
+		bLimpiarLienzo = new JButton("Limpiar lienzo");
+		bLimpiarConsola = new JButton("Limpiar consola");
+		bCon = new JButton("Ctrl.ON");
+		bCoff = new JButton("Ctrl.OFF");
 		bHome = new JButton("Home");
 		bHome.setBackground(Color.green);
-		bPincel = new JButton("Coger pincel");
+		bCogerPincel = new JButton("Coger pincel");
 		
 		
 		setTitle("Scordraw");
@@ -113,7 +119,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		
-		pb = new JProgressBar(0,100){
+		pbAlmacenarPos = new JProgressBar(0,100){
 			@Override
 			public void paint(Graphics g) {
 				super.paint(g);
@@ -125,13 +131,13 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 				
 			}
 		};
-		pb.setPreferredSize(new Dimension(pb.getWidth(), 30));
+		pbAlmacenarPos.setPreferredSize(new Dimension(pbAlmacenarPos.getWidth(), 30));
 		
-		bLimpiar.addActionListener(new ActionListener() {
+		bLimpiarLienzo.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lienzo.limpiarPantalla();
+				pLienzo.limpiarPantalla();
 				
 			}
 		});
@@ -140,7 +146,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				pb.setValue(0);
+				pbAlmacenarPos.setValue(0);
 				lProgreso.setText("Abortado.");
 				scb.abortar();				
 			}
@@ -151,7 +157,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				bAbortar.setEnabled(false);
-				pb.setValue(0);
+				pbAlmacenarPos.setValue(0);
 				lProgreso.setText("Volviendo a inicio...");
 				
 				new Thread(){
@@ -169,39 +175,46 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 			}
 		});
 		
-		bPincel.addActionListener(new ActionListener() {
+		bCogerPincel.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				scb.cogerPincel();
+				new Thread(){
+					public void run() {
+						scb.cogerPincel();
+					}
+				}.start();	
 				
 			}
 		});
 	
-		pb.setValue(0);
+		pbAlmacenarPos.setValue(0);
 		
 		initCombobox();
-		cb.addActionListener(new ActionListener() {
+		cbMuestras.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				lienzo.setNumMuestras((Integer)cb.getSelectedItem());
+				pLienzo.setNumMuestras((Integer)cbMuestras.getSelectedItem());
 				
 			}
 		});
 		
 		getContentPane().setLayout(new GridBagLayout());
 		
-		getContentPane().add(lienzo, formato(0,0,5,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
-		getContentPane().add(bAbortar, formato(0,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(bHome, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(bLimpiar, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(bPincel, formato(0,3,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(lNumeroMuestras, formato(3,2,1,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(cb, formato(4,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(scrollConsola, formato(5,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
-		getContentPane().add(lProgreso, formato(0,4,5,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
-		getContentPane().add(pb,formato(0,5,5,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
+		getContentPane().add(pLienzo, formato(0,0,6,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
+		getContentPane().add(bAbortar, formato(0,1,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,2,2)));
+		getContentPane().add(bHome, formato(1,1,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,2,2,2)));
+		getContentPane().add(bCogerPincel, formato(2,1,2,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,2,2,10)));
+		getContentPane().add(bLimpiarLienzo, formato(0,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,10,10,2)));
+		getContentPane().add(bLimpiarConsola, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,10,2)));
+		getContentPane().add(bCon, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,10,2)));
+		getContentPane().add(bCoff, formato(3,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,10,10)));
+		getContentPane().add(lNumeroMuestras, formato(4,1,1,2,GridBagConstraints.EAST,GridBagConstraints.NONE, new Insets(10,10,10,10)));
+		getContentPane().add(cbMuestras, formato(5,1,1,2,GridBagConstraints.WEST,GridBagConstraints.NONE, new Insets(10,2,10,10)));
+		getContentPane().add(sbConsola, formato(6,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
+		getContentPane().add(lProgreso, formato(0,3,6,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
+		getContentPane().add(pbAlmacenarPos,formato(0,4,6,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
 		
 		configurarDialog();
@@ -217,15 +230,15 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	}
 
 	public JButton getbLimpiar() {
-		return bLimpiar;
+		return bLimpiarLienzo;
 	}
 
 	public void setbLimpiar(JButton bLimpiar) {
-		this.bLimpiar = bLimpiar;
+		this.bLimpiarLienzo = bLimpiar;
 	}
 
 	private void configurarDialog() {
-		JTextArea texto = new JTextArea("Scordraw v1.0\n\nDesarrolladores:\nAntonio Vicente Martín\nJorge García Hinestrosa\n\nControl y programación de Robots\n3º ITIS - Universidad de Almería\n2011");
+		JTextArea texto = new JTextArea("Scordraw v Alpha1 \n\nDesarrolladores:\nAntonio Vicente Martín\nJorge García Hinestrosa\n\nControl y programación de Robots\n3º ITIS - Universidad de Almería\n2011");
 		texto.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		texto.setEditable(false);
 		
@@ -288,7 +301,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		for (int i = 0; i < numeros.length; i++) {
 			numeros[i]=i+5;
 		}
-		cb=new JComboBox(numeros);
+		cbMuestras=new JComboBox(numeros);
 
 	}
 	public void prompt(String s) {
@@ -351,19 +364,19 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	}
 
 	public JScrollPane getScrollConsola() {
-		return scrollConsola;
+		return sbConsola;
 	}
 
 	public void setScrollConsola(JScrollPane scrollConsola) {
-		this.scrollConsola = scrollConsola;
+		this.sbConsola = scrollConsola;
 	}
 
 	public Lienzo getLienzo() {
-		return lienzo;
+		return pLienzo;
 	}
 
 	public void setLienzo(Lienzo lienzo) {
-		this.lienzo = lienzo;
+		this.pLienzo = lienzo;
 	}
 
 	public JTextArea getConsola() {
@@ -383,27 +396,27 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	}
 
 	public JButton getLimpiar() {
-		return bLimpiar;
+		return bLimpiarLienzo;
 	}
 
 	public void setLimpiar(JButton limpiar) {
-		this.bLimpiar = limpiar;
+		this.bLimpiarLienzo = limpiar;
 	}
 
 	public JComboBox getCb() {
-		return cb;
+		return cbMuestras;
 	}
 
 	public void setCb(JComboBox cb) {
-		this.cb = cb;
+		this.cbMuestras = cb;
 	}
 
 	public JProgressBar getPb() {
-		return pb;
+		return pbAlmacenarPos;
 	}
 
 	public void setPb(JProgressBar pb) {
-		this.pb = pb;
+		this.pbAlmacenarPos = pb;
 	}
 
 	public JMenuBar getBarra() {

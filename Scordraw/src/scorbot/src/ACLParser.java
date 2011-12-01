@@ -111,4 +111,7 @@ public class ACLParser {
 	public static String numero(int n) {
 		return n+""+run;
 	}
+	public static String borrarVector(String nombre) {
+		return "DELP "+nombre+run;
+	}
 }
