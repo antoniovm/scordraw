@@ -50,7 +50,7 @@ public static void main(String[] args) throws IOException, UnsupportedCommOperat
 	//ps.escribirCadena(ACLParser.mover(100, 10, 50, -900, 0));
 	scb.setInterfaz(interf);
 	scb.vaciarSalida();
-	System.out.println("Control On: "+scb.controlOn());
+	scb.controlOn();
 	int n=2,x,y,z,p,r;
 	
 	String posicion="P"+2;

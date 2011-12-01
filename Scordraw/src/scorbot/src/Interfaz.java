@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 
@@ -38,7 +39,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 	private JScrollPane scrollConsola;
 	private Lienzo lienzo;
 	private JTextArea consola;
-	private JButton bAbortar, bLimpiar;
+	private JButton bAbortar, bLimpiar, bHome, bPincel;
 	private JComboBox cb;
 	private JProgressBar pb;
 	private JMenuBar barra;
@@ -66,14 +67,21 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 
 	private void inicializar(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		lienzo = new Lienzo(trazos);
-		consola = new JTextArea(">",20,20);
+		(consola = new JTextArea(">",20,30)).setEditable(false);
 		consola.setLineWrap(true);
+		consola.setPreferredSize(consola.getSize());
+		consola.setMinimumSize(consola.getSize());
 		scrollConsola = new JScrollPane(consola);
-		scrollConsola.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollConsola.setAutoscrolls(true);
+		scrollConsola.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		bAbortar = new JButton("Abortar");
 		bAbortar.setBackground(new Color(0x00ff5555));
 		bAbortar.setForeground(Color.black);
 		bLimpiar = new JButton("Limpiar");
+		bHome = new JButton("Home");
+		bHome.setBackground(Color.green);
+		bPincel = new JButton("Coger pincel");
+		
 		
 		setTitle("Scordraw");
 		
@@ -132,7 +140,41 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				pb.setValue(0);
+				lProgreso.setText("Abortado.");
 				scb.abortar();				
+			}
+		});
+		
+		bHome.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				bAbortar.setEnabled(false);
+				pb.setValue(0);
+				lProgreso.setText("Volviendo a inicio...");
+				
+				new Thread(){
+					public void run() {
+						scb.home();
+						scb.controlOn();
+						scb.declararPosicion("H");
+						scb.guardarPosicionAbsoluta("H", 0, -2500, 1000, -900, 0);
+						scb.mover("H");
+						lProgreso.setText("Terminado!");
+						bAbortar.setEnabled(true);
+					};
+				}.start();	
+				
+			}
+		});
+		
+		bPincel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				scb.cogerPincel();
+				
 			}
 		});
 	
@@ -150,20 +192,38 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		
 		getContentPane().setLayout(new GridBagLayout());
 		
-		getContentPane().add(lienzo, formato(0,0,4,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
+		getContentPane().add(lienzo, formato(0,0,5,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
 		getContentPane().add(bAbortar, formato(0,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(bLimpiar, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(lNumeroMuestras, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(cb, formato(3,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
-		getContentPane().add(scrollConsola, formato(4,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
-		getContentPane().add(lProgreso, formato(0,3,4,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
-		getContentPane().add(pb,formato(0,4,4,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
+		getContentPane().add(bHome, formato(1,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(bLimpiar, formato(2,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(bPincel, formato(0,3,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(lNumeroMuestras, formato(3,2,1,2,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(cb, formato(4,2,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
+		getContentPane().add(scrollConsola, formato(5,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
+		getContentPane().add(lProgreso, formato(0,4,5,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
+		getContentPane().add(pb,formato(0,5,5,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
 		
 		configurarDialog();
 		
 		
 	}
+	public JButton getbAbortar() {
+		return bAbortar;
+	}
+
+	public void setbAbortar(JButton bAbortar) {
+		this.bAbortar = bAbortar;
+	}
+
+	public JButton getbLimpiar() {
+		return bLimpiar;
+	}
+
+	public void setbLimpiar(JButton bLimpiar) {
+		this.bLimpiar = bLimpiar;
+	}
+
 	private void configurarDialog() {
 		JTextArea texto = new JTextArea("Scordraw v1.0\n\nDesarrolladores:\nAntonio Vicente Martín\nJorge García Hinestrosa\n\nControl y programación de Robots\n3º ITIS - Universidad de Almería\n2011");
 		texto.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
@@ -180,7 +240,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		panelSuperior.setBackground(Color.white);
 		panelSuperior.setLayout(new GridBagLayout());
 		//panelSuperior.add(new JButton("IMAGEN"), formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
-		panelSuperior.add(panelImagen, formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,-120)));
+		panelSuperior.add(panelImagen, formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,7,2,-120)));
 		panelSuperior.add(texto, formato(1,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,120,2,2)));
 		
 		JPanel panelInferior = new JPanel();
@@ -250,7 +310,6 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.out.println("Cerrando...");
 		scb.cerrar();
 		System.exit(1);
 		

@@ -68,7 +68,10 @@ public class Scorbot extends Thread{
 	 * @return true si consigue volver a home, false en caso contrario
 	 */
 	public boolean home() {
+		String s="";
 		ps.escribirCadena(ACLParser.home());
+		comprobarEstadoDeRespuesta(ps.getRespuesta());
+		ps.leer();
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
@@ -117,7 +120,7 @@ public class Scorbot extends Thread{
 	 * @return true si asi es, false en caso contrario
 	 */
 	private boolean comprobarEstadoDeRespuesta(String respuesta) {
-		interfaz.getConsola().append(respuesta.trim());
+		interfaz.getConsola().append(respuesta.trim()+"\n");
 		return respuesta.contains("Done.");
 	}
 	
@@ -133,17 +136,17 @@ public class Scorbot extends Thread{
 	 */
 	public boolean guardarPosicionAbsoluta(String posicion, int x, int y, int z, int p, int r) {
 		ps.escribirCadena(ACLParser.guardarPosicionAbsoluta(posicion));
-		interfaz.getConsola().append(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"\n");
 		ps.escribirCadena(ACLParser.numero(x));
-		interfaz.getConsola().append(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"\n");
 		ps.escribirCadena(ACLParser.numero(y));
-		interfaz.getConsola().append(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"\n");
 		ps.escribirCadena(ACLParser.numero(z));
-		interfaz.getConsola().append(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"\n");
 		ps.escribirCadena(ACLParser.numero(p));
-		interfaz.getConsola().append(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"\n");
 		ps.escribirCadena(ACLParser.numero(r));
-		System.out.println(ps.getRespuesta());
+		interfaz.getConsola().append(ps.getRespuesta()+"\n");
 		return comprobarEstadoDeRespuesta(ps.getRespuesta());
 	}
 	
@@ -245,6 +248,13 @@ public class Scorbot extends Thread{
 
 	}
 	
+	public void cogerPincel(){
+		pinza("A");
+		declararPosicion("P1");
+		guardarPosicionAbsoluta("P1", -2500, -2500, 100, -900, 0);
+		mover("P1");
+	}
+	
 	public void describirTrazoContinuo(){
 		recorrer(declararGuardar());
 		interfaz.getlProgreso().setText("Fin del trazado!");
@@ -262,7 +272,7 @@ public class Scorbot extends Thread{
 		interfaz.getlProgreso().setText("Recorriendo trayectoria...");
 		controlOn();
 		for (int j = 2; j < i+1; j++) {
-			mover("V["+j+"]");
+			moverLineal("V["+j+"]");
 		}
 		
 	}
@@ -271,38 +281,41 @@ public class Scorbot extends Thread{
 		interfaz.getlProgreso().setText("Esperando a nuevo trazo...");
 		LinkedList<Point> trazo = trazos.consumir();
 		interfaz.getlProgreso().setText("Almacenando posiciones...");
-		Iterator<Point> iterator = trazo.iterator();
+		Iterator<Point> iterator = trazo.iterator();		
 		Point virtual=null, real=null;
-		int i =3;
+		int i =2;
 		interfaz.getPb().setValue(0);
-		declararVectorPosiciones("V", 8);
+		declararVectorPosiciones("V", trazo.size()+3);
 		//declararPosicion(2+"");
 		virtual = iterator.next();
 		real=ConversorCoordenadas.convertir(virtual);
-		guardarPosicionAbsoluta("V[2]", real.x, real.y, 1000, -900, 0);		
+		interfaz.getbAbortar().setEnabled(false);
+		guardarPosicionAbsoluta("V[1]", real.x, real.y, 1000, -900, 0);
+		interfaz.getbAbortar().setEnabled(true);
 		interfaz.getPb().setValue(100/(trazo.size()+2)*1);
 		
 		for (; iterator.hasNext();i++) {
 			//declararPosicion(i+"");
 			real=ConversorCoordenadas.convertir(virtual);
+			interfaz.getbAbortar().setEnabled(false);
 			guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
+			interfaz.getbAbortar().setEnabled(true);
 			virtual = iterator.next();
 			interfaz.getPb().setValue(100/(trazo.size()+2)*(i-1));
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 		}
 		//declararPosicion(i+"");
 		real=ConversorCoordenadas.convertir(virtual);
+		interfaz.getbAbortar().setEnabled(false);
 		guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 100, -900, 0);
+		interfaz.getbAbortar().setEnabled(true);
 		interfaz.getPb().setValue(100/(trazo.size()+2)*(i-1));
 		
 		//declararPosicion((i++)+"");
-		guardarPosicionAbsoluta("V["+(++i)+"]", real.x, real.y, 1000, -900, 0);
+		i++;
+		interfaz.getbAbortar().setEnabled(false);
+		guardarPosicionAbsoluta("V["+i+"]", real.x, real.y, 1000, -900, 0);
+		interfaz.getbAbortar().setEnabled(true);
 		interfaz.getPb().setValue(100/(trazo.size()+2)*(i-1));
 		interfaz.getPb().setValue(100);
 		

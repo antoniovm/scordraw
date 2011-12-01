@@ -30,6 +30,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		this.trazos = trazos;
 		trazo = new LinkedList<Point>();
 		setPreferredSize(new Dimension(360*2,180*2));
+		setMinimumSize(new Dimension(360*2,180*2));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		repaint();
