@@ -77,6 +77,10 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		
 		setTitle("Scordraw");
 		
+		ImageIcon img = new ImageIcon("."+File.separator+"bin"+File.separator+"img"+File.separator+"logo2.png");
+		setIconImage(img.getImage());
+		
+		
 		//MENUBAR
 		barra = new JMenuBar();
 		mArchivo = new JMenu("Archivo");
