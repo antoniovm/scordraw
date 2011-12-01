@@ -24,6 +24,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 	private int numMuestras; 
 	
 	public Lienzo(ColaCircularConcurrente<LinkedList<Point>> trazos) {
+		
 		a=new Point(-1, -1);
 		b=new Point(-1, -1);
 		numMuestras = 5;
@@ -33,7 +34,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		//setMinimumSize(new Dimension(360*2,180*2));
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		repaint();
+		//repaint();
 	}
 	
 	public int getNumMuestras() {
@@ -168,7 +169,7 @@ public class Lienzo extends JPanel implements MouseMotionListener,MouseListener{
 		a=(Point) b.clone();
 		b.setLocation(e.getX(), e.getY());	//Modificar valores de b, para pintar una rectadesde a hasta b
 		capturarPunto(b);	//Añadir a la lista de puntos que forma un trazo
-		//repaint();
+		//repaint(getWidth()/2,getHeight()/2,getWidth(),getHeight());
 		
 	}
 
