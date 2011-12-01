@@ -15,8 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.LinkedList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -154,21 +156,41 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		getContentPane().add(pb,formato(0,4,4,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
 		
-		configurarDialog(dAbout);
+		configurarDialog();
 		
 		
 	}
-	private void configurarDialog(JDialog dAbout) {
-		JLabel texto = new JLabel("AAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAA");
+	private void configurarDialog() {
+		JTextArea texto = new JTextArea("Scordraw v1.0\n\nDesarrolladores:\nAntonio Vicente Martín\nJorge García Hinestrosa\n\nControl y programación de Robots\n3º ITIS - Universidad de Almería\n2011");
+		texto.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		texto.setEditable(false);
+		
+		JPanel panelImagen = new JPanel(){
+			public void paint(Graphics g) {
+				ImageIcon img = new ImageIcon("."+File.separator+"bin"+File.separator+"img"+File.separator+"logo2.png");
+				g.drawImage(img.getImage(), 0, 0, this);
+			}
+		};
+		
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setBackground(Color.white);
 		panelSuperior.setLayout(new GridBagLayout());
-		panelSuperior.add(new JButton("IMAGEN"), formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
-		panelSuperior.add(texto, formato(1,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		//panelSuperior.add(new JButton("IMAGEN"), formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		panelSuperior.add(panelImagen, formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,-120)));
+		panelSuperior.add(texto, formato(1,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,120,2,2)));
 		
 		JPanel panelInferior = new JPanel();
+		JButton boton=new JButton("Aceptar");
+		boton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dAbout.dispose();
+				
+			}
+		});
 		panelInferior.setLayout(new GridBagLayout());
-		panelInferior.add(new JButton("Aceptar"), formato(0,0,2,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
+		panelInferior.add(boton, formato(0,0,2,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(2,2,2,2)));
 		
 		dAbout.setLayout(new GridBagLayout());
 		dAbout.add(panelSuperior,formato(0,0,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(0, 0, 2, 0)));
