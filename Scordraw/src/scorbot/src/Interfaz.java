@@ -63,14 +63,14 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		inicializar(trazos);
 		addWindowListener(this);
 		setVisible(true);
-		//setResizable(false);
+		setResizable(false);
 	}
 
 	private void inicializar(ColaCircularConcurrente<LinkedList<Point>> trazos) {
 		pLienzo = new Lienzo(trazos);
 		(consola = new JTextArea(">",20,30)).setEditable(false);
 		consola.setLineWrap(true);
-		consola.setPreferredSize(consola.getSize());
+		//consola.setPreferredSize(consola.getSize());
 		//consola.setMinimumSize(consola.getSize());
 		sbConsola = new JScrollPane(consola);
 		sbConsola.setAutoscrolls(true);
@@ -213,7 +213,7 @@ public class Interfaz extends JFrame implements WindowListener, ActionListener{
 		getContentPane().add(lNumeroMuestras, formato(4,1,1,2,GridBagConstraints.EAST,GridBagConstraints.NONE, new Insets(10,10,10,10)));
 		getContentPane().add(cbMuestras, formato(5,1,1,2,GridBagConstraints.WEST,GridBagConstraints.NONE, new Insets(10,2,10,10)));
 		getContentPane().add(sbConsola, formato(6,0,1,5,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(1,1,1,1)));
-		getContentPane().add(lProgreso, formato(0,3,6,1,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(10,10,10,10)));
+		getContentPane().add(lProgreso, formato(0,3,6,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH, new Insets(10,10,10,10)));
 		getContentPane().add(pbAlmacenarPos,formato(0,4,6,1,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL, new Insets(10,10,10,10)));
 		pack();
 		
